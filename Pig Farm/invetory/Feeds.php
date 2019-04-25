@@ -1,9 +1,10 @@
 <?php
-
+    require 'Inventory.php';
 /**
  *
  */
-class Feeds extends Invetory
+
+class Feed extends Inventory
 {
   public $type;
   public $date_of_use;
@@ -11,9 +12,28 @@ class Feeds extends Invetory
   public $collectors_Employee_ID;
 
 
-  function __construct()
+//declare the deafault values to null to enable method overloading
+  function __construct($name=null, $quantity=null, $date_of_addition=null, $type=null, $date_of_use=null,$quantity_acquired=null, $employee_ID=null)
   {
-    // code...
+       //assign the values for the feed
+        if ($name !=null && $quantity !=null && $date_of_addition !=null && $type !=null){
+
+             //assign the values of the parent
+             parent::__construct($name,  $quantity, $date_of_addition);
+             //assign type of feed
+             $this->type=$type;
+
+             Feed::addItem();
+        }
+
+      //we will be able to archive the feed if $date_of_use, $quantity_acquired and Employee_Id is assigned
+        if ($date_of_use !=null && $quantity_acquired !=null && $employee_ID !=null) {
+               $this->date_of_use=$date_of_use;
+               $this->quantity_acquired=$quantity_acquired;
+               $this->collectors_Employee_ID=$employee_ID;
+             }
+
+
   }
 
 
@@ -24,7 +44,34 @@ class Feeds extends Invetory
        3.retrieveItem: It is used to view the tools available in the database. it returs a table of the tools in the database
   **/
 
+//Overidden parent method
+  public function addItem()
+  {   // Insert query
+    $check="SELECT * FROM PIG_FARM.feed where name=?";
+    //check if a feed with the same name is not in the database
+          if (!($this->itemExists($check,$this->Name))) {
+            //add new  feed
+            $Query="INSERT INTO PIG_FARM.feed(`Name`,`Quantity`,`date_added`,`type`)
+            VALUES('$this->Name','$this->Quantity','$this->Date_of_Addition','$this->type')";
+
+            //add to the records
+            $this->register_item($Query, $this->Name,"",false);
+          }else {
+            echo "<script>alert('".$this->Name." already exists')</script>";
+            		    // echo "<script>window.open('../','_self')</script>";
+          }
+
+
+  }
+
+  public function removeItem(){}
+
+    public function retrieveItems(){}
+
+
 }
+
+    new Feed("A",100,"2012-10-10","weaners mash");
 
 
  ?>

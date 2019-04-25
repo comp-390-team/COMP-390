@@ -1,9 +1,11 @@
 <?php
 
+require '../Database/DB.php';
+
 /**
  *
  */
-class Pig
+class Pig extends DBconnect
 {
   public $Pig_Id;
   public $Date_farrowed;
