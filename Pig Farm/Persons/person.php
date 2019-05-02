@@ -1,8 +1,9 @@
 <?php
-require '../Database/DB.php';
+// require '../Database/DB.php';
 
  abstract class Person extends DBconnect{
-  private  $Name;
+  private  $S_Name;
+  private  $F_Name;
   private  $email;
   private  $phone_no;
   private  $job_tittle;
@@ -17,7 +18,7 @@ require '../Database/DB.php';
 
      }
 
-     protected  function login(String $Employee_Id,String $User_password){
+     protected  function login($Employee_Id, $User_password){
        $query="SELECT * FROM TAP_FARM.employees where  Emp_ID=?";
 
        $run_query=$this->connect()->prepare($query);
@@ -31,7 +32,7 @@ require '../Database/DB.php';
 
      if($row = $run_query->fetch(PDO::FETCH_ASSOC)){
 //Using password verify we hash the password to compare if it atches to the password stored in the database
-       if(!password_verify($this->password,$row['pass_code'])){
+       if(!password_verify($User_password,$row['pass_code'])){
       //User enters a wrong password
          echo "<script>alert('Employee ID or Password Incorrect')</script>";
          echo "<script>window.open('../','_self')</script>";
@@ -40,7 +41,7 @@ require '../Database/DB.php';
          //Using global variable SESSION we assing the name to help track the user
            $_SESSION['username']=$row['F_Name']."  ".$row['S_Name'];
            // $_SESSION['image']=$row['Image'];
-                          echo "<script>alert('Welcome ".$_SESSION['username']."')</script>";
+          echo "<script>alert('Welcome ".$_SESSION['username']."')</script>";
           //We redirect the user to their page according to their type
         }
       }

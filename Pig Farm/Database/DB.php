@@ -19,8 +19,11 @@
 
 
       	   try {
-      	   	$dsn="mysql:host=".$this->servername.";dbname=".$this->database_Name.";charset=".$this->charset;
-      	   	$pdo=new PDO($dsn,$this->user_Name,$this->password);
+      	   	$link="mysql:host=".$this->servername.";
+                        dbname=".$this->database_Name.";
+                        charset=".$this->charset;
+
+      	   	$pdo=new PDO($link,$this->user_Name,$this->password);
       	   	$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
       	   	return $pdo;
 
@@ -56,6 +59,17 @@
                       }else
                       echo "<script>alert('Connection problem')</script>";
 
+          }
+
+//Delete and item from a table
+          protected function removeItem($Query,$check_query,$ID,$item_to_remove){
+            if ($this->itemExists($check_query,$ID)) {
+                  $run_query=$this->connect()->prepare($Query);
+                  $run_query->execute([$ID]);
+            }else{
+
+              echo "<script>alert('".$item_to_remove." with ".$ID." does not exist')</script>";
+            }
           }
     }
 
