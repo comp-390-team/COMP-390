@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>muthuure</title>
+	<link rel="stylesheet" type="text/css" href="main.css">
+	<link rel="stylesheet" type="text/css" href="boostrap.min.css">
+</head>
+<body>
+	<div id="header">
+		<div class="btn-area" onclick="toggleNav()">&#9776 </div>
+		<h2>Farm Manager Panel</h2>
+	</div>
+
+		
+
+	<div id="sidenav">
+		 
+				<div id="profile">
+   		 	<h5 style="color: #ADFF2F; font-family: lobster; margin-left: 30px;border-bottom: 20px;font-size: 1.1em;">FARM MANAGER</h5>
+              <center><img src="brian.jpg" alt=""></center>
+                  <p><span style="color: white; font-size: 15px; font-family: anton;margin-left: 10px;border-bottom: 10px;">Name: </span>Brian Muthuure<br>
+                     <span style="color: white; font-size: 15px; font-family: anton;margin-left: 10px;border-bottom: 10px;">Title: </span>Farm Manager<br>
+                
+          </div>
+
+	<ul id="nav">
+		<li>View Employees</li>
+		<li>View Pigs</li>
+		<li>Approve sale</li>
+		<li>View Store</li>
+	</ul>
+	</div>
+  <div class="main-content">
+
+  </div>
+    	
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+    <script >
+    	function toggleNav(){
+    		document.getElementById('sidenav').classList.toggle('active');
+    	}
+    </script>
+</body>
+</html>
