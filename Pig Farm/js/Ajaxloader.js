@@ -1,3 +1,19 @@
+///Secion atendant files manupilation
+
+$(document).ready(function(){
+  $("#add_pig").click(function(){
+    $("#production").load("loadfiles/addpig.php");
+  });
+});
+
+
+$(document).ready(function(){
+  $("#update_records").click(function(){
+    $("#production").load("loadfiles/table.html");
+  });
+});
+
+
 
      $("#menu-toggle").click( function(e) {
         e.preventDefault();

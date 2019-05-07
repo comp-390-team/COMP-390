@@ -23,8 +23,10 @@ class FarmManager extends Person
 
    //check if the Employee is already added
     if (!($this->itemExists($check,$ID))) {
-      $query="INSERT INTO PIG_FARM.employees(`ID`,`f_name`,`s_name`,`email`,`phone_no`,`job_tittle`,`nationality`)
-             VALUES('$ID','$F_Name','$S_Name','$email','$phone_no','$Job_tittle','$nationali')";
+
+      $pass_code=password_hash($ID,PASSWORD_DEFAULT);
+      $query="INSERT INTO PIG_FARM.employees(`ID`,`f_name`,`s_name`,`email`,`phone_no`,`job_tittle`,`nationality`,`passcode`)
+             VALUES('$ID','$F_Name','$S_Name','$email','$phone_no','$Job_tittle','$nationali','$pass_code')";
 
              //add the Employee
              $this->register_item($query, $F_Name."  ".$S_Name,"",false);
@@ -33,6 +35,7 @@ class FarmManager extends Person
                 // echo "<script>window.open('../','_self')</script>";
       }
   }
+
 
   public function fireEmployee($ID)
   {
@@ -49,6 +52,6 @@ class FarmManager extends Person
 }
 
      $manager=new FarmManager();
-     // $manager->hireEmployee( "EU/1567/18","Ojwang","Opunda","elianto@gmail.com","0700279067","Section attendant","Kenyan");
-     $manager->fireEmployee("EU/1567/18");
+     $manager->hireEmployee( "EU/1567/20","Ojwang","Opunda","elianto@gmail.com","0700279067","StoreKeeper","Kenyan");
+     // $manager->fireEmployee("EU/1567/18");
  ?>

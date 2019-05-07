@@ -1,5 +1,6 @@
+
 <?php
-// require '../Database/DB.php';
+require '../Database/DB.php';
 
  abstract class Person extends DBconnect{
   private  $S_Name;
@@ -18,35 +19,39 @@
 
      }
 
-     protected  function login($Employee_Id, $User_password){
+
+
+     protected  function login($Employee_Id, $User_password, $redirect_url){
        $query="SELECT * FROM TAP_FARM.employees where  Emp_ID=?";
 
        $run_query=$this->connect()->prepare($query);
        $run_query->execute([$Employee_Id]);
 
-   if ($run_query->rowCount()<1){
-   echo "<script>alert('Employee Id incorrect')</script>";
-   //redirecting user to a new page after an error
-   echo "<script>window.open('../','_self')</script>";
-   }else{
+          if ($run_query->rowCount()<1){
+            echo "<script>alert('Employee Id incorrect')</script>";
+               //redirecting user to a new page after an error
+        echo "<script>window.open('../','_self')</script>";
+        }else{
 
      if($row = $run_query->fetch(PDO::FETCH_ASSOC)){
-//Using password verify we hash the password to compare if it atches to the password stored in the database
+                  //Using password verify we hash the password to compare if it atches to the password stored in the database
        if(!password_verify($User_password,$row['pass_code'])){
-      //User enters a wrong password
+                  //User enters a wrong password
          echo "<script>alert('Employee ID or Password Incorrect')</script>";
          echo "<script>window.open('../','_self')</script>";
        }
        else{
-         //Using global variable SESSION we assing the name to help track the user
+             //Using global variable SESSION we assing the name to help track the user
            $_SESSION['username']=$row['F_Name']."  ".$row['S_Name'];
-           // $_SESSION['image']=$row['Image'];
+             // $_SESSION['image']=$row['Image'];
           echo "<script>alert('Welcome ".$_SESSION['username']."')</script>";
           //We redirect the user to their page according to their type
         }
       }
     }
   }
+
+
 
 }
  ?>
