@@ -1,6 +1,6 @@
 
 <?php
-require '../Database/DB.php';
+// require '../Database/DB.php';
 
  abstract class Person extends DBconnect{
   private  $S_Name;

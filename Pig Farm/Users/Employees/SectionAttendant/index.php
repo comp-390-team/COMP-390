@@ -1,14 +1,4 @@
-<?php
-// include '../../includes/DB_Connect.php';
-// include '../../Cows/viewproduction.php';
-// $product=new ViewData();
-
-        session_start();
-
-?>
-
-
-
+<?php session_start();?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
@@ -31,19 +21,12 @@
 
 
 
+        <!-- Sweet alert used for alerts -->
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+      <script src="sweetalert2.all.min.js"></script>
 
 
-    <script src="../../../js/libraries/bootstrap.min.js"></script>
-    <script src="../../../js/libraries/jquery-3.3.1.min.js"></script>
-    <script src="../../../js/libraries/vue.min.js"></script>
-    <script type="../../../../CSS/MDB/js/mdb.min.js"></script>
 
-    <script type="../../../CSS/MDB/js/popper.min.js"></script>
-    <script src="../../../CSS/Scripts/js/jquery.dataTables.min.js"></script>
-
-
-    <!-- Table sorter Javascript file -->
-    <script src="../../js/sorttables.js"></script>
     <!-- TableSorter -->
 
 
@@ -55,14 +38,15 @@
       <div id="sidebar-wrapper">
         <div class="row">
           <div id="profile">
-              <center><img src="pig.JPG" alt=""></center>
+                  <center><img src="pig.JPG" alt=""></center>
                   <p><span style="color: green">Name:</span> <?php echo $_SESSION['username'] ?> <br>
-                     <span style="color: green">Title :</span>Section Attendant </p>
+                  <span style="color: green">Title :</span>Section Attendant </p>
           </div>
         </div>
         <ul class="sidebar-nav">
               <li id="add_pig"><a> <span id="add_pig"><i class="fas fa-chart-bar"></i></span> Pig </a></li>
-              <li id="update_records"><a> <span id="update_pig"><i class="fas fa-users menu-icon"></i></span>  Update_Records</a></li>
+              <li id="update_records"><a> <span id="update_pig"><i class="fas fa-users menu-icon"></i></span> Update_Records</a></li>
+              <li id="sell_pigs"><a> <span id=""><i class="fas fa-users menu-icon"></i></span> Sale information </a></li>
               <li id="settings"><a> <span id="menu-icon"><i class="fas fa-cog menu-icon"></i></span>  Settings</a></li>
               <li id="user_profile"><a> <span id="profiles"><i class="fas fa-user menu-icon"></i></span> Profile</a></li>
         </ul>
@@ -73,8 +57,8 @@
       <div  id="page-content-wrapper">
         <div class="container-fluid">
 
-          <div class="row">
-            <div class="col-lg-12">
+          <!-- <div class="row"> -->
+            <div class="" style="width: 100%; position: relative;">
 
 
               <div class="row"  id="header">
@@ -95,7 +79,7 @@
               <!-- department heading -->
 
           </div>
-        </div>
+        <!-- </div> -->
 
           <div class="row" id="production">
             <!-- products view -->
@@ -111,14 +95,24 @@
 
             </div>
           </div>
-        </div>
-      </div>
-      <!-- Page content-->
 
-   </div>
+
+   <script src="../../../js/libraries/bootstrap.min.js"></script>
+   <script src="../../../js/libraries/jquery-3.3.1.min.js"></script>
+   <script src="../../../js/libraries/vue.min.js"></script>
+   <script src="../../../CSS/MDB/js/mdb.min.js"></script>
+
+   <script src="../../../CSS/MDB/js/popper.min.js"></script>
+   <script src="../../../CSS/Scripts/js/jquery.dataTables.min.js"></script>
 
    <script src="../../../js/Ajaxloader.js"></script>
+   <script src="../../../js/sectionAttendant.js"></script>
    <script src="../../../js/vueApp.js"></script>
+
+    <script type="text/javascript">
+      // Animations initialization
+      new WOW().init();
+    </script>
 
   </body>
 </html>

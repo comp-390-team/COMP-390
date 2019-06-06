@@ -1,49 +1,55 @@
-=-<div class="row">
+<!-- <div class="row"> -->
 
 
-       <div class="col-md-12 col-sm-12" style="padding-left:200px";>
+       <div class="col-md-6 col-sm-6" style="padding-left:200px;";>
 
        <div class="card">
          <!--Card content-->
          <div class="card-body">
 
            <!-- Form -->
-           <form name="" method="post" action="../../../pigs/Pig.php">
+           <form  role="form">
              <!-- Heading -->
              <h3 class="dark-grey-text text-center">
                <strong>Add Pig:</strong>
              </h3>
              <hr>
 
+
              <div class="md-form">
                <i class="fas fa-user prefix grey-text"></i>
-               <input type="text" id="form3" class="form-control"  name="id" required>
-               <label for="form3">Pig ID</label>
-             </div>
-             <div class="md-form">
-               <i class="fas fa-envelope prefix grey-text"></i>
-               <input type="number" id="form2" class="form-control"   name="weight" required>
-               <label for="form2">Weight</label>
+               <input type="text" id="pig_id" class="form-control"  name="id" required value="">
+               <label for="pig_id">Pig ID   <span style="display: none" id="id_r">*</span> </label>
              </div>
 
              <div class="md-form">
                <i class="fas fa-envelope prefix grey-text"></i>
-               <input type="text" id="form2" class="form-control"   name="gender" required>
-               <label for="form2">Sex</label>
+               <input type="number" id="weight" class="form-control" min="9" max="100"  name="weight" required>
+               <label for="weight">Weight <span style="display: none" id="weight_r">*</span></label>
              </div>
+
              <div class="md-form">
                <i class="fas fa-envelope prefix grey-text"></i>
-               <input type="text" id="form2" class="form-control"    name="breed" required>
-               <label for="form2">Breed</label>
+               <input type="text" id="gender" class="form-control"   name="gender" required>
+               <label for="form2">gender <span style="display: none" id="gender_r">*</span></label>
+             </div>
+
+
+             <div class="md-form">
+               <i class="fas fa-envelope prefix grey-text"></i>
+               <input type="text" id="breed" class="form-control"    name="breed" required>
+               <label for="gender">Breed <span style="display: none" id="breed_r">*</span></label>
              </div>
 
              <div class="md-form">
                <i class="far  fa-calendar-alt prefix grey-text"></i>
-               <input type="date" id="form2" class="form-control"       name="day" required>
+               <input type="date" id="day" class="form-control"  max='<?php echo date('Y-m-d');?>'
+                 min='<?php echo date('Y')-20 ."-".date("m")."-". date("d"); ?>' name="day" required>
              </div>
 
              <div class="text-center">
-               <button class="btn btn-indigo" name="addpig">Add New Pig</button>
+               <button type="button" class="btn btn-indigo"
+               onclick="addNewPig()" name="addpig">Add New Pig</button>
              </div>
 
            </form>
@@ -54,4 +60,9 @@
 
     <!-- </div> -->
 </div>
+<div class="col-md-4" id="error_notification" style="display:none">
+    <h2 style="width: 200px; height: 420px;
+    background: green; position: absolute;
+    color: white; font-size: 300%; font-weight: bold"><center>Please fill all the fields!</h2></span>
 </div>
+<!-- </div> -->

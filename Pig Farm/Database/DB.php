@@ -71,6 +71,17 @@
               echo "<script>alert('".$item_to_remove." with ".$ID." does not exist')</script>";
             }
           }
+
+
+          protected function updateItem($Query,$check_query,$ID,$item_to_remove){
+            if ($this->itemExists($check_query,$ID)) {
+                  $run_query=$this->connect()->prepare($Query);
+                  $run_query->execute([$ID]);
+            }else{
+
+              echo "<script>alert('".$item_to_remove." with ".$ID." does not exist')</script>";
+            }
+          }
     }
 
 ?>

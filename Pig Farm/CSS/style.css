@@ -11,8 +11,32 @@
   opacity: 0.9;
   left:-250px;
   transition: all 1s linear;
-
 }
+
+#tableHolder{
+   /* position:fixed; */
+  transition: all 0.7s linear;
+}
+
+
+#close_update_form{
+  float:right;
+  color:white;
+  font-size: 15px;
+  font-weight: bold;
+  margin-top: 0px;
+  text-align: justify;
+
+  height: 35px;
+  width: 35px;
+}
+
+
+#sell_request{
+  padding-top: 20px;
+  padding-bottom: 10px;
+}
+
 
 /* main content */
 #page-content-wrapper{
@@ -90,7 +114,7 @@ transition: all 1s linear;
 
 #header{
   background: #2c3e50;
-  height: 100px;
+  height: 85px;
 }
 
 #header h1{
