@@ -14,7 +14,9 @@ class SectionAttendant extends Person{
   public function updateRecords(){
   }
 
-  public function addPig(){}
+  public function addPig(){
+
+  }
 
 }
 

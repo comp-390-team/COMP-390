@@ -1,5 +1,11 @@
 <!-- <div class="row"> -->
+    <?php
 
+    require '../../../../Database/DB.php';
+    require '../../../../pigs/Pig.php';
+    $pig=new  Pig();
+
+     ?>
 
        <div class="col-md-6 col-sm-6" style="padding-left:200px;";>
 
@@ -15,7 +21,11 @@
              </h3>
              <hr>
 
-
+             <div class="md-form">
+               <i class="fas fa-user prefix grey-text"></i>
+               <input type="text" id="mother_id" class="form-control"  name="id" required value="">
+               <label for="pig_id">Mother ID  <span style="display: none" id="id_r">*</span> </label>
+             </div>
              <div class="md-form">
                <i class="fas fa-user prefix grey-text"></i>
                <input type="text" id="pig_id" class="form-control"  name="id" required value="">
@@ -30,15 +40,25 @@
 
              <div class="md-form">
                <i class="fas fa-envelope prefix grey-text"></i>
-               <input type="text" id="gender" class="form-control"   name="gender" required>
+               <input type="text" id="gender" class="form-control"  list="allowed_gender"  name="gender" required>
                <label for="form2">gender <span style="display: none" id="gender_r">*</span></label>
+
+               <datalist id="allowed_gender">
+                    <option value="M">M</option>
+                    <option value="F">F</option>
+
+               </datalist>
              </div>
 
 
              <div class="md-form">
                <i class="fas fa-envelope prefix grey-text"></i>
-               <input type="text" id="breed" class="form-control"    name="breed" required>
+               <input type="text" id="breed" class="form-control"  list="breeds"  name="breed" required>
                <label for="gender">Breed <span style="display: none" id="breed_r">*</span></label>
+
+               <datalist id="breeds">
+                    <?php $pig->loadBreeds("all");?>
+               </datalist>
              </div>
 
              <div class="md-form">

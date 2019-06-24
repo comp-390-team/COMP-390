@@ -23,7 +23,7 @@ class Feed extends Inventory
              //assign type of feed
              $this->type=$type;
 
-             // Feed::addItem();
+             Feed::addItem();
         }
 
       //we will be able to archive the feed if $date_of_use, $quantity_acquired and Employee_Id is assigned
@@ -55,10 +55,10 @@ class Feed extends Inventory
             VALUES('$this->Name','$this->Quantity','$this->Date_of_Addition','$this->type')";
 
             //add to the records
-            $this->register_item($Query, $this->Name,"../Persons/AddTF.php",true);
+            $this->register_item($Query, $this->Name,"",false);
+
           }else {
             echo "<script>alert('".$this->Name." already exists')</script>";
-            		    echo "<script>window.open('../Persons/AddTF.php','_self')</script>";
           }
 
 
@@ -67,7 +67,7 @@ class Feed extends Inventory
   public function deleteItem($name){
 
     //query of the feed to be removed is realy in the databse
-    $check_query="SELECT * FROM PIG_FARM.feed where NAme=?";
+    $check_query="SELECT * FROM PIG_FARM.feed where Name=?";
 
     //delete query
     $query="DELETE FROM PIG_FARM.feed where Name=?";
@@ -77,13 +77,34 @@ class Feed extends Inventory
 
   }
 
-    public function retrieveItems(){}
+
+    public function retrieveItems(){
+
+      $query="SELECT * FROM feed";
+      $run = $this->connect()->query($query);
+              while ($pig = $run->FETCH())
+          {
+                $name=$pig['Name'];
+                $quantity=$pig['Quantity'];
+                $type=$pig['type'];
+                ?>
+
+                <tr   id='<?php echo "f_".$name ?>'>
+                  <td id='<?php echo "f_".$name."_n"; ?>'><?php echo $name ?></td>
+                  <td id='<?php echo "f_".$name."_q"; ?>'><?php echo $quantity ?></td>
+                  <td id='<?php echo "f_".$name."_t"; ?>'><?php echo $type ?></td>
+
+                  <td> <button class="btn btn-success btn-sm" type="button" name="button" onclick='showFeedDetails(<?php echo "\"$name\"" ?>)'>hand out</button> </td>
+                  <td> <button class="btn btn-danger  btn-sm" type="button" name="button" onclick='deleteFeed(<?php echo "\"$name\"" ?>)'>delete</button> </td>
+                </tr>
+
+                <?php
+
+          }
+
+    }
 
 
 }
-
-   // $feed=  new Feed("A",100,"2012-10-10","weaners mash");
-   // $feed->deleteItem("A");
-
 
  ?>

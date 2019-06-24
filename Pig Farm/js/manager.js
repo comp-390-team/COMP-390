@@ -21,6 +21,75 @@ function editEmployee(id,Name,No,title,Nationality) {
 }
 
 
+function addnewEmploee() {
+  var e_id         =$("#E_id").val();
+  var e_fname      =$("#E_fname").val();
+  var e_sname      =$("#E_sname").val();
+  var e_address    =$("#E_address").val();
+  var e_phone      =$("#E_phone").val();
+  var e_title      =$("#E_title").val();
+  var e_Nationality=$("#E_Nationality").val();
+
+  var clear_to_add=true;
+if (e_id.length<8){
+     clear_to_add=false;
+     $("#E_id").css({"border-bottom":"2px solid red","transition": "all 0.5s linear"});
+}
+if (e_fname.length<2){
+     clear_to_add=false;
+     $("#E_fname").css({"border-bottom":"2px solid red","transition": "all 0.5s linear"});
+  }
+  if (e_sname.length<2){
+       clear_to_add=false;
+       $("#E_sname").css({"border-bottom":"2px solid red","transition": "all 0.5s linear"});
+    }
+    if (!validatePhone(e_phone)){
+         clear_to_add=false;
+         $("#E_phone").css({"border-bottom":"2px solid red","transition": "all 0.5s linear"});
+      }
+      if (e_title.length<5){
+           clear_to_add=false;
+           $("#E_title").css({"border-bottom":"2px solid red","transition": "all 0.5s linear"});
+        }
+        if (e_Nationality.length<3){
+             clear_to_add=false;
+             $("#E_Nationality").css({"border-bottom":"2px solid red","transition": "all 0.5s linear"});
+          }
+
+if(!validateEmail(e_address)){
+  clear_to_add=false;
+  $("#E_address").css({"border-bottom":"2px solid red","transition": "all 0.5s linear"});
+}
+
+function validatePhone(phoneNumber) {
+    var found = phoneNumber.search(/^(\+{1}\d{2,3}\s?[(]{1}\d{1,3}[)]{1}\s?\d+|\+\d{2,3}\s{1}\d+|\d+){1}[\s|-]?\d+([\s|-]?\d+){1,2}$/);
+    if(found > -1)  return true;
+    else  return false;
+}
+
+if (clear_to_add)
+  $.ajax({
+      type: "POST",
+      url:"../../Persons/AddEmployee.php",
+      data: {id  : e_id, first_name:e_fname, second_name:e_sname,
+            email:e_address, phone: e_phone, title:e_title, nationality:e_Nationality},
+      dataType:'JSON',
+      success: function(response){
+         Swal.fire("","successfully added "+e_fname+" "+e_sname);
+      },
+      error:function (response) {
+         alert(response.responseText);
+      }
+  });
+}
+
+//email validation code
+function validateEmail(email) {
+  var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(email);
+}
+
+
 function deleteEmployee(id) {
 
   if (confirm("Confirm deletion of Employee with ID "+id)) {
@@ -114,7 +183,9 @@ function updateEmployee() {
 //Functions for loading databse
 //function to view all pigs in the database
 function viewAll() {
-$("#production").load("loadfiles/pigsdata/pigtable.php");
+$("#production").load("loadfiles/pigsdata/pigtable.php",function() {
+  handleSortPane();
+});
 }
 
 //function to view all pigs in the database
@@ -123,6 +194,7 @@ function viewPigsTosell() {
                $("#decline").hide();
                $("#quote_price").hide();
                $("#to_hide").hide();
+               handleSortPane();
           });
           }
 
@@ -275,5 +347,81 @@ function viewPigsTosell() {
                 $("#weight_entry").html($("#"+id+"_weight").text()+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;kg");
                 $("#age_entry").text(age);
 
+            });
+          }
+
+
+//call to update sell restrictions
+          function updateSellSettings(min_age, min_weight, sex, breeds, current_age) {
+            $.ajax({
+                type: "POST",
+                url: "../../pigs/addpigOrRemovePig.php",
+                data: {min_age:min_age, min_weight:min_weight, sex:sex, breeds:breeds, current_age:current_age},
+                dataType:'JSON',
+                success: function(response){
+                  Swal.fire("Settings successfully updated");
+                   // $("#"+pig_id).fadeOut(400);
+                   // $("#sales_"+pig_id).fadeOut(400);
+
+                },
+                error: function (response) {
+                  alert(response.responseText)
+                  Swal.fire("An error occured ");
+                }
+            });
+          }
+
+
+          function addNewBreed(breed) {
+            $.ajax({
+                type: "POST",
+                url: "../../pigs/addpigOrRemovePig.php",
+                data: {add_breed:breed},
+                dataType:'JSON',
+                success: function(response){
+                  if (response.success){
+                      Swal.fire("",breed+" successfully added","success");
+
+                      var option="<option value='"+breed+"' > "+breed+"</option>";
+                      $("#combo-options").append(option);
+
+                    }
+                    else{
+                      Swal.fire("",breed+" already exists","warning");
+                    }
+
+                },
+                error: function (response) {
+                  // alert(response.responseText)
+                  Swal.fire("An error occured ");
+                }
+            });
+          }
+
+          function removeBreed(breed) {
+            $.ajax({
+                type: "POST",
+                url: "../../pigs/addpigOrRemovePig.php",
+                data: {remove_breed:breed},
+                dataType:'JSON',
+                success: function(response){
+                  if (response.success){
+                      Swal.fire("",breed+" successfully removed","success");
+
+                      var option="<option value='"+breed+"' > "+breed+"</option>";
+                      $("#select_"+breed).remove();
+                      $("#delete_"+breed).remove();
+
+
+                    }
+                    else{
+                      Swal.fire("",breed+" does  not exists","warning");
+                    }
+
+                },
+                error: function (response) {
+                  alert(response.responseText)
+                  Swal.fire("An error occured ");
+                }
             });
           }

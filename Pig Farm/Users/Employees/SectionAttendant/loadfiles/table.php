@@ -1,74 +1,69 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title></title>
+
+<div class="col-md-12" style="padding-bottom: 5px; padding-top: 0px; margin: 0">
+	<div class="row" style="border-bottom: 2px solid #567" style="margin-top:0px">
+		<div class="col-md-6">
+				 <button class="btn btn-info" type="button" id="viewAll"  onclick="loadFiles('all')"
+					style="height: 55px;font-weight:bold; font-size:20px; width:100%">All Pigs </button>
+		</div>
+		<div class="col-md-6" style="border-left: 2px solid yellow">
+					<button class="btn btn-info" type="button" id="viewViable" onclick="loadFiles('viable')"
+					style="height: 55px;font-weight:bold; font-size:20px; width:100%">Pigs viable for sale</button></center>
+		</div>
+	</div>
+</div>
+
+	<div class="col-lg-12 col-md-12 col-sm-12"  id="tableHolder"  style="height: calc(100vh - 160px); overflow-y: scroll;">
+		<div class="container mt-4" id="statisticsHolder"></div>
+		<div class="container mt-2" id="allPigs">
+			<!-- <p>Sort by</p> -->
 
 
-	 <link rel="stylesheet" type="text/css" href="../../../../CSS/MDB/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="../../../../CSS/MDB/css/mdb.min.css">
-    <link rel="stylesheet" type="text/css" href="../../../../CSS/MDB/css/style.css">
-    <link rel="stylesheet" type="text/css" href="../../../../CSS/MDB/css/mdb.style.min.css">
-    <link rel="stylesheet" type="text/css" href="../../../../CSS/Scripts/css/jquery.dataTables.min.css">
+      <?php
+			require '../../../../Database/DB.php';
+			require '../../../../pigs/Pig.php';
 
+         $link='\'../../includes/getsortedData.php?choice=viewAll&\'';
+		   	require '../../../includes/sortby.php';
 
-   <script src="../../../../CSS/MDB/js/jquery-3.3.1.min.js"></script>
-	 <script src="../../../../CSS/MDB/js/bootstrap.min.js"></script>
+			 ?>
 
-   <script src="../../../../CSS/MDB/js/mdb.min.js"></script>
-   <script src="../../../../CSS/MDB/js/popper.min.js"></script>
-   <script src="../../../../CSS/Scripts/js/jquery.dataTables.min.js"></script>
+	    <!-- </div> -->
 
-
-</head>
-<body>
-
-  		<!-- <center><h1 style="width: 100%">Pig records</h1></center> -->
-
-	<!-- <div class="row"> -->
-	<div class="col-lg-12 col-md-12 col-sm-12" id="tableHolder">
-		<div class="container mt-4">
 			<table class="table table-bordered table-sm " id="myTable">
 	  <thead>
 	    <tr>
 	      <th class="text-uppercase">Pig ID</th>
 	      <th class="text-uppercase">Breed</th>
-	      <th class="text-uppercase">Weight</th>
+	      <th class="text-uppercase">Weight(Kgs)</th>
 				<th class="text-uppercase">Age</th>
 	      <th class="text-uppercase">Sex</th>
 	      <th class="text-uppercase">Update</th>
 	      <th class="text-uppercase">Delete</th>
 	    </tr>
 	  </thead>
-	  <tbody>
+	  <tbody id="data">
 	  	<?php
-	        require '../../../../Database/DB.php';
-			    require '../../../../pigs/Pig.php';
-	        $pig=new  Pig();
-					$pig->viewPigs();
+					$pig->viewPigs($_GET['type'],false,"");
 			 ?>
 	  </tbody>
 	</table>
 	</div>
-
 	</div>
 
-	<div class="col-lg-4 col-md-4 col-sm-4 container-fluid"  id="to_hide" >
-		<p></p>
-		<!-- Material form register -->
-		<div class="card" style="background: #ECEFF1">
+	<div class="col-lg-4 col-md-4 col-sm-4 container-fluid"  id="to_hide" style="background: #E0E0E0;height: calc(100vh - 163px); padding: 8px;">
+		<div class="card" style="background: #ECEFF1; margin-bottom: 10px" >
 
       <div class="card-header  " style="height: 70px; background:#78909C" >
 				<div class="row" style="margin: 0; padding: 0">
 
-        <div class="col-md-11">
+        <div class="col-md-10">
 					<h5 class="white-text text-center ">
 							<strong>Update Pig Record</strong>
 					</h5>
         </div>
 
-        <div class="col-md-1">
-					<button type="button" class="btn-danger btn btn-sm" onclick="closeForm()" id="close_update_form" >&times</button>
-
+        <div class="col-md-2">
+					<button type="button" class="btn-danger btn btn-sm" onclick="closeForm()" id="close_update_form" style="float:left">&times</button>
         </div>
 
 			</div>
@@ -79,6 +74,15 @@
 
 		    <!--Card content-->
 		    <div class="card-body">
+
+					<div class="row"   style=" padding:3px; margin-left:30px; margin-right:5px; margin-top: 0px">
+
+							<div class="col-lg-12 col-md-12 col-sm-12" >
+
+							     <a id="load_statistics" style="font-size: 20px; color: orange; float:right">view  statistics</a>
+					</div>
+				</div>
+
 
 		        <!-- Form -->
 		        <form class="text-center"  id="input_form" style="color: #757575;" role="form"  enctype="multipart/form-data">
@@ -309,10 +313,6 @@
 		});
 		$("#details_entry").slideUp(400);
 
-
-
-
-
 	    output.src = URL.createObjectURL(event.target.files[0]);
 			output1.src = URL.createObjectURL(event.target.files[1]);
 			output2.src = URL.createObjectURL(event.target.files[2]);
@@ -321,29 +321,27 @@
 
 	  };
 	</script>
+
     <script >
     	$(document).ready(function () {
     		$('#myTable').dataTable();
-    		// body...
+				$("#statisticsHolder").hide();
+
+    		$("#load_statistics").click(function() {
+
+    			   $("#allPigs").slideUp(150);
+						 $("#statisticsHolder").slideDown(150);
+
+						 var id    = $("#pig_entry").val();
+						 var weight= $("#weight_entry").val();
+						 var age= $("#age_entry").val();
+						 var breed= $("#breed_entry").val();
+
+
+
+						 $("#statisticsHolder").load("loadfiles/statistics/statistics.php?pig_id="+id+"&weight="+weight+"&age="+age+"&breed="+breed);
+
+    		});
     	});
 
     </script>
-
-		<script src="../../../../js/libraries/bootstrap.min.js"></script>
-    <script src="../../../../js/libraries/jquery-3.3.1.min.js"></script>
-    <script src="../../../../js/libraries/vue.min.js"></script>
-    <script src="../../../../CSS/MDB/js/mdb.min.js"></script>
-
-		<script src="../../../../js/Ajaxloader.js"></script>
-
-
-    <script type="../../../../CSS/MDB/js/popper.min.js"></script>
-    <script src="../../../../CSS/Scripts/js/jquery.dataTables.min.js"></script>
-<!-- Initializations -->
-<script type="text/javascript">
-	// Animations initialization
-	new WOW().init();
-</script>
-
-</body>
-</html>

@@ -23,6 +23,8 @@
       <link rel="stylesheet" type="text/css" href="../../CSS/Scripts/css/jquery.dataTables.min.css">
 
 
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+      <script src="sweetalert2.all.min.js"></script>
 
     <!-- TableSorter -->
 
@@ -37,7 +39,13 @@
           <div id="profile">
               <center><img src="pig.JPG" alt=""></center>
                   <p><span style="color: green">Name:</span> <?php echo $_SESSION['username'] ?> <br>
-                     <span style="color: green">Title :</span>Section Attendant </p>
+                     <span style="color: green">Title :</span><?php $_SESSION['title'] ?> </p>
+
+                     <span style="color: green">Employee Id:
+                        <label id="emp_id" style="color: white">
+                          <?php echo gzinflate(base64_decode(str_rot13($_GET['id']))); ?>
+                        </label>
+                     </span>
           </div>
         </div>
         <ul class="sidebar-nav">

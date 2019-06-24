@@ -1,6 +1,5 @@
 <?php
 //Extends the file to include the database file
-// require '../Database/DB.php';s
 
 
   /**

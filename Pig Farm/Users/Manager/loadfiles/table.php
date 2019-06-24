@@ -20,7 +20,7 @@
 
 </head>
 <body>
-	<div class="col-lg-12 col-md-12 col-sm-12" id="tableHolder">
+	<div class="col-lg-12 col-md-12 col-sm-12" id="tableHolder" style="height: calc(100vh - 110px); overflow-y: scroll;" >
 	<div class="container mt-4">
 		<table class="table table-bordered table-sm " id="myTable">
   <thead>
@@ -47,7 +47,7 @@
 </div>
 </div>
 
-<div class="col-lg-4 col-md-4 col-sm-4 container-fluid"  id="to_hide" >
+<div class="col-lg-4 col-md-4 col-sm-4 container-fluid"  id="to_hide" style="background: #E0E0E0">
 	<p></p>
 	<!-- Material form register -->
 	<div class="card" style="background: #ECEFF1">

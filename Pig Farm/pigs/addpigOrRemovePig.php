@@ -7,6 +7,7 @@ require 'Pig.php';
 
 if(isset($_GET['pig_id'])){
   //Add  new pig
+  $mother_id=$_GET['mother_id'];
   $ID       =$_GET['pig_id'];
   $breed    =$_GET['breed'];
   $weight   =$_GET['weight'];
@@ -19,7 +20,7 @@ if(isset($_GET['pig_id'])){
 
 //add pig
   $pig=new Pig( $ID, $date, $breed, $weight, $gender);
-  $pig->addPig();
+  $pig->addPig($mother_id);
 
 }else{
 
@@ -53,6 +54,29 @@ if(isset($_GET['pig_id'])){
      $ID       =$_GET['reject_id'];
      $remark   =$_GET['remark'];
     $pig->addRejectedPig($ID, $remark);
+
+    //resets the status of arejected sell request
+ }elseif (isset($_GET['updaterejects'])) {
+     $ID       =$_GET['updaterejects'];
+    $pig->updateRejects($ID);
+
+
+}elseif (isset($_GET['saleID'])) {
+    $ID          =$_GET['saleID'];
+    $Customer_Id =$_GET['customer_id'];
+   $pig->addSales($ID,$Customer_Id);
+ }elseif (isset($_POST['min_age'])){
+   $min_age       =$_POST['min_age'];
+   $min_weight    =$_POST['min_weight'];
+   $sex           =$_POST['sex'];
+   $breeds        =$_POST['breeds'];
+   $current_age   =$_POST['current_age'];
+
+   $pig->updateSettings($min_age, $min_weight, $sex, $breeds, $current_age);
+ }elseif (isset($_POST['add_breed'])){
+   $pig->addnewBreed($_POST['add_breed']);
+ }elseif (isset($_POST['remove_breed'])){
+   $pig->removeBreed($_POST['remove_breed']);
  }
 
 }

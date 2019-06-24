@@ -29,21 +29,32 @@
 
     <div class="col-lg-12 col-md-12 col-sm-12" id="tableHolder">
   		<div class="container mt-4">
+
+        <?php
+
+        require '../../../../../Database/DB.php';
+        require '../../../../../pigs/Pig.php';
+
+           $link='\'../../includes/getsortedData.php?choice=rejected&\'';
+          require '../../../../includes/sortby.php';
+
+         ?>
+
   			<table class="table table-bordered table-sm " id="myTable">
   	  <thead >
   	    <tr>
   	      <th class="text-uppercase">Pig ID</th>
   	      <th class="text-uppercase">Cancellation date</th>
-  	      <th class="text-uppercase">Weight</th>
+  	      <th class="text-uppercase">Reason</th>
   				<th class="text-uppercase">Action</th>
   	    </tr>
   	  </thead>
-  	  <tbody>
+  	  <tbody id="data">
   	  	<?php
-  	        require '../../../../../Database/DB.php';
-  			    require '../../../../../pigs/Pig.php';
-  	        $pig=new  Pig();
-  					$pig->rejectedForSale();
+  	        // require '../../../../../Database/DB.php';
+  			    // require '../../../../../pigs/Pig.php';
+  	        // $pig=new  Pig();
+  					$pig->rejectedForSale(false,"");
   			 ?>
   	  </tbody>
   	</table>

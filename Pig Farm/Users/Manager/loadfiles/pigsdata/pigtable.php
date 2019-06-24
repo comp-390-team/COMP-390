@@ -38,6 +38,15 @@
 	<!-- <div class="row"> -->
 	<div class="col-lg-12 col-md-12 col-sm-12" id="tableHolder">
 		<div class="container mt-4">
+			<?php
+			require '../../../../Database/DB.php';
+			require '../../../../pigs/Pig.php';
+
+				 $link='\'../includes/getsortedData.php?choice=pigsdata&\'';
+				require '../../../includes/sortby.php';
+
+			 ?>
+
 			<table class="table table-bordered table-sm " id="myTable">
 	  <thead>
 	    <tr>
@@ -48,12 +57,12 @@
 	      <th class="text-uppercase">Sex</th>
 	    </tr>
 	  </thead>
-	  <tbody>
+	  <tbody id="data">
 	  	<?php
-	        require '../../../../Database/DB.php';
-			    require '../../../../pigs/Pig.php';
-	        $pig=new  Pig();
-					$pig->viewPigData();
+	        // require '../../../../Database/DB.php';
+			    // require '../../../../pigs/Pig.php';
+	        // $pig=new  Pig();
+					$pig->viewPigData(false,"");
 			 ?>
 	  </tbody>
 	</table>
@@ -80,16 +89,6 @@
     <script type="../../../../CSS/MDB/js/popper.min.js"></script>
     <script src="../../../../CSS/Scripts/js/jquery.dataTables.min.js"></script>
 <!-- Initializations -->
-<script type="text/javascript">
-	// Animations initialization
-	new WOW().init();
-</script>
-<script type="text/javascript">
-// Material Select Initialization
-		$(document).ready(function() {
-		$('.mdb-select').materialSelect();
-		});
-</script>
 
 </body>
 </html>

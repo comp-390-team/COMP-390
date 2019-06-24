@@ -1,9 +1,3 @@
-//Load the pig data table by default
-$(document).ready(function() {
-  $("#production").load("loadfiles/table.php",function() {
-    $("#to_hide").hide();
-  });
-});
 
 
 ///Secion atendant files manupilation
@@ -11,59 +5,170 @@ $(document).ready(function() {
 $(document).ready(function(){
   $("#add_pig").click(function(){
     $("#production").load("loadfiles/addpig.php",function() {
+
+      //ADD all the nations
+        $("#all_nations").load("loadfiles/nationslist.php")
+
       //HANDLE CHANGES IN THE ID
         $("#pig_id").change(function() {
-        $("#pig_id").css({"border-bottom":"2px solid green","transition": "all 3s linear"});
+        $("#pig_id").css({"border-bottom":"2px solid green","transition": "all 0.6s linear"});
         $("#id_r").hide();
       });
       //hANDLE CHANGES IN THE BREED
         $("#breed").change(function() {
-        $("#breed").css({"border-bottom":"2px solid green","transition": "all 3s linear"});
+        $("#breed").css({"border-bottom":"2px solid green","transition": "all 0.6s linear"});
         $("#breed_r").hide();
       });
 
        //hANDLE CHANGES FOR THE weight
         $("#weight").change(function() {
-        $("#weight").css({"border-bottom":"2px solid green","transition": "all 3s linear"});
+        $("#weight").css({"border-bottom":"2px solid green","transition": "all 0.6s linear"});
         $("#weight_r").hide();
       });
 
       //hANDLE CHANGES FOR THE gender
         $("#gender").change(function() {
-        $("#gender").css({"border-bottom":"2px solid green","transition": "all 3s linear"});
+        $("#gender").css({"border-bottom":"2px solid green","transition": "all 0.6s linear"});
         $("#gender_r").hide();
       });
 
       //hANDLE CHANGES FOR THE  day
         $("#day").change(function() {
-        $("#day").css({"border-bottom":"2px solid green","transition": "all 3s linear"});
+        $("#day").css({"border-bottom":"2px solid green","transition": "all 0.6s linear"});
         $("#day_r").hide();
       });
-
     });
+
+    $("#add_pig").css({"background":"#16A085","transition": "all 0.6s linear", "border-bottom":"2px solid yellow","border-top": "2px solid yellow"});
+
+    //reset the rest
+    $("#user_profile").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+    $("#update_records").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+    $("#sell_pigs").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+    $("#settings").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+    $("#view_pigs").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
   });
 });
 
+  $("#update_records").click(function(){  loadFiles("all"); });
 
-$(document).ready(function(){
-  $("#update_records").click(function(){
-    $("#production").load("loadfiles/table.php", function() {
-      $("#to_hide").hide();
-    });
+
+    function loadFiles(Type) {
+      $("#production").load("loadfiles/table.php?type="+Type,function() {
+         type=Type;
+         handleSortPane();
+         $("#to_hide").hide();
+        // vieSorted("production","loadfiles/table.php?type=all","all",true);
+      });
+
+    }
+
+
+
+
+ var handlePane=true;
+function vieSorted(area,url,Type,hide, handlePane) {
+  $("#"+area).load(url, function() {
+
+    type=Type;
+    if (hide){
+    $("#to_hide").hide();
+
+    $("#update_records").css({"background":"#16A085","transition": "all 0.6s linear", "border-bottom":"2px solid yellow","border-top": "2px solid yellow"});
+
+    // reset the rest
+    $("#user_profile").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+    $("#add_pig").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+    $("#sell_pigs").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+    $("#settings").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+    $("#view_pigs").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+}
   });
+}
+
+
+function handleSortPane(){
+  $("#sort_btn").click(function() {
+    $("#sort_pane").show();
+    $("#sort_btn").hide();
+  });
+
+
+
+$("#close_sort_pane").click(function() {
+$("#sort_pane").hide();
+$("#sort_btn").show();
 });
+
+$("#sort_pane").hide();
+}
+
+//global variable to choose between pigs viable for sale and all pigs
+var type="all";
+
+
+function sortBy(baseUrl) {
+  var from=$("#sort_from").val();
+  var to=$("#sort_to").val();
+  var min_weight=$("#sort_min").val();
+  var max_weight=$("#sort_max").val();
+  var breed=$("#sort_breed").val();
+  var male  =$("#sort_male").is(":checked");
+  var female=$("#sort_female").is(":checked");
+
+  var sex= (male && female)?"all":
+           (male)?"M":(female)?"F":"all";
+
+  var queries="type="+type+"&from="+from+"&to="+to+"&min_weight="+min_weight+"&max_weight="+max_weight+"&breed="+breed.replace(/ /g,'_')+"&sex="+sex;
+
+           // alert("f: "+from+"\nt: "+to+"\nmin: "+min_weight+"\nmax: "+max_weight+"\nbreed: "+breed.replace(/ /g,'_')+"\nsex: "+sex);
+
+
+           vieSorted("data",baseUrl+queries,type,false);
+
+
+}
+
+
+
+
+
 
 $(document).ready(function(){
   $("#sell_pigs").click(function(){
-    $("#production").load("loadfiles/pigSell/sell.php");
+    $("#production").load("loadfiles/pigSell/sell.php",function () {
+      $("#to_hide").hide();
+      handleSortPane();
+
+      $("#sell_pigs").css({"background":"#16A085","transition": "all 0.6s linear", "border-bottom":"2px solid yellow","border-top": "2px solid yellow"});
+
+      //reset the rest
+      $("#user_profile").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+      $("#update_records").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+      $("#add_pig").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+      $("#settings").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+      $("#view_pigs").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+
+    });
+
   });
 });
 
 //loads the file for accepting pigs for sale
 $(document).ready(function(){
   $("#view_pigs").click(function(){
-    $("#production").load("loadfiles/pigsdata/pigtable.php", function() {
+    $("#production").load("loadfiles/pigsdata/pigtable.php?", function() {
+      handleSortPane();
       $("#to_hide").hide();
+
+      $("#view_pigs").css({"background":"#16A085","transition": "all 0.6s linear", "border-bottom":"2px solid yellow","border-top": "2px solid yellow"});
+
+      //reset the rest
+      $("#user_profile").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+      $("#update_records").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+      $("#sell_pigs").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+      $("#settings").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+      $("#add_pig").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
 
     });
   });
@@ -77,13 +182,17 @@ $(document).ready(function(){
      $("#menu-toggle").click( function(e) {
         e.preventDefault();
         $("#wrapper").toggleClass("menuDispalyed");
+
+        // $("#to_hide").removeClass( "col-lg-4 col-md-4 col-sm-4" )
+        // .addClass( "col-lg-3 col-md-3 col-sm-3");
+
      });
 
 
 
      $(document).ready(function(){
        $("#employees").click(function(){
-         $("#production").load("loadfiles/employee.php");
+         $("#production").load("loadfiles/table.php");
        });
      });
 
@@ -95,13 +204,48 @@ $(document).ready(function(){
 
      $(document).ready(function(){
        $("#settings").click(function(){
-         $("#production").load("loadfiles/settings.php");
+         $("#production").load("loadfiles/settings/pig_settings/settings.php");
+
+         $("#settings").css({"background":"#16A085","transition": "all 0.6s linear", "border-bottom":"2px solid yellow","border-top": "2px solid yellow"});
+
+         //reset the rest
+         $("#user_profile").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+         $("#update_records").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+         $("#sell_pigs").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+         $("#add_pig").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+         $("#view_pigs").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
        });
      });
 
      $(function(){
        $("#new_record").click(function(){
          $("#production").load("loadfiles/new_record.php");
+
+
+       });
+     });
+
+
+     //Open profile
+     $(document).ready(function(){
+       $("#user_profile").click(function(){
+         var   user_id=document.getElementById('emp_id').innerText;
+            // user_id="333/333/333";
+         $("#production").load("loadfiles/profiles/profile.php?id="+user_id);
+
+         $("#user_profile").css({"background":"#16A085","transition": "all 0.6s linear", "border-bottom":"2px solid yellow","border-top": "2px solid yellow"});
+
+         //reset the rest
+         $("#tools").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+         $("#feeds").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+
+         $("#add_pig").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+         $("#update_records").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+         $("#sell_pigs").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+         $("#settings").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+         $("#view_pigs").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+
+
        });
      });
 
@@ -116,12 +260,19 @@ function closeForm(){
   });
 
 }
+
+
+function openTable(){
+  $("#allPigs").slideDown(150);
+  $("#statisticsHolder").slideUp(150);
+
+}
    //This function when called will shrink the div with the table and show the update pane
    function hideDiv(id,age,years_old) {
      $("#tableHolder" ).removeClass( "col-lg-12 col-md-12 col-sm-12" )
      .addClass( "col-lg-8 col-md-8 col-sm-8");
 
-     $("#to_hide").fadeIn(3000,function() {
+     $("#to_hide").fadeIn(800,function() {
 
        //Open the file input if user clicks yes to request pig for sale
           $(document).ready(function() {
@@ -185,29 +336,29 @@ function closeForm(){
      var check=true;
 
      if (pig_id == ""){
-       $("#pig_id").css({"border-bottom":"2px solid red","transition": "all 3s linear"});
+       $("#pig_id").css({"border-bottom":"2px solid red","transition": "all 0.6s linear"});
        $("#id_r").show().css({"color":"red","font-size":"25px"});
        check=false;
      }
      if (breed == ""){
-       $("#breed").css({"border-bottom":"2px solid red","transition": "all 3s linear"});
+       $("#breed").css({"border-bottom":"2px solid red","transition": "all 0.6s linear"});
        $("#breed_r").show().css({"color":"red","font-size":"25px"});
        check=false;
      }
      if (weight == 0){
-       $("#weight").css({"border-bottom":"2px solid red","transition": "all 3s linear"});
+       $("#weight").css({"border-bottom":"2px solid red","transition": "all 0.6s linear"});
        $("#weight_r").show().css({"color":"red","font-size":"25px"});
        check=false;
 
      }
      if (day == ""){
-       $("#day").css({"border-bottom":"2px solid red","transition": "all 3s linear"});
+       $("#day").css({"border-bottom":"2px solid red","transition": "all 0.6s linear"});
        $("#day_r").show().css({"color":"red","font-size":"25px"});
        check=false;
 
      }
      if (gender != "M" &&  gender !="F" ){
-       $("#gender").css({"border-bottom":"2px solid red","transition": "all 3s linear"});
+       $("#gender").css({"border-bottom":"2px solid red","transition": "all 0.6s linear"});
        $("#gender_r").show().css({"color":"red","font-size":"25px"});
        check=false;
        window.alert("please specify gender as either capital F or capital M")
@@ -221,11 +372,12 @@ function closeForm(){
 
 
 function addNewPig() {
-       var pig_id=document.getElementById('pig_id').value;
-       var breed=document.getElementById('breed').value;
-       var weight=document.getElementById('weight').value;
-       var day=document.getElementById('day').value;
-       var gender=document.getElementById('gender').value;
+       var mother_id=$("#mother_id").val();
+       var pig_id=$('#pig_id').val();
+       var breed=$('#breed').val()
+       var weight=$('#weight').val();
+       var day=$('#day').val()
+       var gender=$('#gender').val();
 
 
      if (checkInputs(pig_id, breed, weight, day, gender)) {
@@ -247,7 +399,7 @@ function addNewPig() {
 
           }
       };
-      xmlhttp.open("GET","../../../pigs/addpigOrRemovePig.php?pig_id="+pig_id+"&breed="+breed+"&weight="+weight+"&day="+day+"&gender="+gender,true);
+      xmlhttp.open("GET","../../../pigs/addpigOrRemovePig.php?pig_id="+pig_id+"&mother_id="+mother_id+"&breed="+breed+"&weight="+weight+"&day="+day+"&gender="+gender,true);
       xmlhttp.send();
   }else{
     $("#error_notification").fadeIn(2500).fadeOut(20000);
@@ -352,9 +504,10 @@ function updatePig() {
               $("#"+id+"_sex").text(gender);
 
 
+              // Swal.fire("",this.responseText);
               //on success upload image if sell is requested
               if (request == "Y") {
-                uploadImage();
+                uploadImage("upload.php");
               }
             }
         };
@@ -377,9 +530,10 @@ function updatePig() {
 
 
 ///image upload script
-function uploadImage(){
+function uploadImage(url){
     var filedata = document.getElementById('images');
-            formdata = false;
+
+      formdata = false;
     if (window.FormData) {
         formdata = new FormData();
     }
@@ -404,17 +558,48 @@ function uploadImage(){
     }
     if (formdata) {
         $.ajax({
-            url: "loadfiles/imageUploads/upload.php",
+            url: "loadfiles/imageUploads/"+url,
             type: "POST",
             data: formdata,
             processData: false,
             contentType: false,
             success: function(res) {
-            alert("success");
+
+            Swal.fire("Image(s) successfully uploaded"+res.responseText)
             },
             error: function(res) {
+              alert(res.responseText);
 
             }
              });
             }
+        }
+
+
+
+        function checkPassword(employee_id,url,old_password,new_password,choice,message, edit_data) {
+          $.ajax({
+              type: "GET",
+              url:url,
+              data: {check  : employee_id, old_P:old_password, new_P:new_password, choice:choice, user_info : edit_data},
+              dataType:'JSON',
+              success: function(response){
+
+                   if (response.success) {
+                        $("#old_pA").show();
+                        $("#old_password").css({"border-bottom":"2px solid green","transition": "all 0.5s linear"});
+
+                        if (response.updatesuccess) {
+                          Swal.fire(message+"successfully changed");
+                        }
+
+                   }else {
+                     $("#old_pA").hide();
+                     $("#old_password").css({"border-bottom":"2px solid red","transition": "all 0.5s linear"});
+                   }
+              },
+              error:function (response) {
+                 alert(response.responseText);
+              }
+          });
         }

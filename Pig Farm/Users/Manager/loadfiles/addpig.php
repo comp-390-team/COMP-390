@@ -8,7 +8,7 @@
          <div class="card-body">
 
            <!-- Form -->
-           <form name="" method="post" action="../../Persons/AddEmployee.php">
+           <form name="">
              <!-- Heading -->
              <h3 class="dark-grey-text text-center">
                <strong>Hire Employee</strong>
@@ -17,47 +17,50 @@
 
              <div class="md-form">
                <i class="fas fa-user prefix grey-text"></i>
-               <input type="text" id="form3" class="form-control"  name="id" >
-               <label for="form3">Employee ID</label>
+               <input type="text" id="E_id" class="form-control"  name="id" >
+               <label for="E_id">Employee ID</label>
              </div>
              <div class="md-form">
                <i class="fas fa-envelope prefix grey-text"></i>
-               <input type="text" id="form2" class="form-control"   name="first_name" >
-               <label for="form2">First Name</label>
-             </div>
-
-             <div class="md-form">
-               <i class="fas fa-envelope prefix grey-text"></i>
-               <input type="text" id="form2" class="form-control"   name="second_name" >
-               <label for="form2">Second Name</label>
+               <input type="text" id="E_fname" class="form-control"   name="first_name" >
+               <label for="E_fname">First Name</label>
              </div>
 
              <div class="md-form">
                <i class="fas fa-envelope prefix grey-text"></i>
-               <input type="text" id="form2" class="form-control"   name="email" >
-               <label for="form2">Email address</label>
+               <input type="text" id="E_sname" class="form-control"   name="second_name" >
+               <label for="E_sname">Second Name</label>
              </div>
 
              <div class="md-form">
                <i class="fas fa-envelope prefix grey-text"></i>
-               <input type="text" id="form2" class="form-control"    name="phone" >
-               <label for="form2">Phone No</label>
+               <input type="text" id="E_address" class="form-control"   name="email" pattern=".+@beststartupever.com">
+               <label for="E_address">Email address</label>
              </div>
 
              <div class="md-form">
                <i class="fas fa-envelope prefix grey-text"></i>
-               <input type="text" id="form2" class="form-control"   name="tittle" >
-               <label for="form2">Job Tittle</label>
+               <input type="text" id="E_phone" class="form-control"    name="phone" >
+               <label for="E_phone">Phone No</label>
              </div>
 
              <div class="md-form">
                <i class="fas fa-envelope prefix grey-text"></i>
-               <input type="text" id="form2" class="form-control"   name="nationality" >
-               <label for="form2">Nationality </label>
+               <input type="text" id="E_title" class="form-control"   name="tittle" >
+               <label for="E_title">Job Tittle</label>
+             </div>
+
+             <div class="md-form">
+               <i class="fas fa-envelope prefix grey-text"></i>
+               <input type="text" id="E_Nationality" class="form-control"  list="nations"  name="nationality" >
+               <label for="E_Nationality">Nationality </label>
+               <div id="all_nations">
+
+               </div>
              </div>
 
              <div class="text-center">
-               <button class="btn btn-success" name="addpig">Hire Employee</button>
+               <button class="btn btn-success" type="button" onclick="addnewEmploee()" >Hire Employee</button>
              </div>
 
            </form>

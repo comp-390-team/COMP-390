@@ -37,6 +37,16 @@
 
 	<div class="col-lg-12 col-md-12 col-sm-12" id="tableHolder">
 		<div class="container mt-4">
+
+			<?php
+			require '../../../../Database/DB.php';
+			require '../../../../pigs/Pig.php';
+
+ 				$link='\'../includes/getsortedData.php?choice=pigSell&\'';
+ 			 require '../../../includes/sortby.php';
+
+ 			?>
+
 			<table class="table table-bordered table-sm " id="myTable">
 	  <thead>
 	    <tr>
@@ -49,12 +59,9 @@
 
 	    </tr>
 	  </thead>
-	  <tbody>
+	  <tbody id="data">
 	  	<?php
-	        require '../../../../Database/DB.php';
-			    require '../../../../pigs/Pig.php';
-	        $pig=new  Pig();
-					$pig->viewPigsToBeSold();
+					$pig->viewPigsToBeSold(false,"");
 			 ?>
 	  </tbody>
 	</table>
@@ -62,7 +69,7 @@
 
 	</div>
 
-	<div class="col-lg-3 col-md-3 col-sm-3 container-fluid"  id="to_hide" >
+	<div class="col-lg-4 col-md-4 col-sm-4 container-fluid"  id="to_hide" >
 		<p></p>
 		<!-- Material form register -->
 		<div class="card" style="background: #ECEFF1; margin: 0px;">

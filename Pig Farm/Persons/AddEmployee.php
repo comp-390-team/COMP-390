@@ -7,14 +7,14 @@ $manager=new FarmManager();
 
 
 
-if(isset($_POST['addpig'])){
+if(isset($_POST['id'])){
   //Get employee data
   $ID      =$_POST['id'];
   $f_name  =$_POST['first_name'];
   $s_name  =$_POST['second_name'];
-  $email   =$_POST['email'];
+  $email   =strtolower($_POST['email']);
   $phone   =$_POST['phone'];
-  $tittle  =$_POST['tittle'];
+  $tittle  =$_POST['title'];
   $nationality   =$_POST['nationality'];
 
  //insert the employee to the database
@@ -33,8 +33,9 @@ if(isset($_POST['addpig'])){
 
      //update date
      $manager->updateEmployee($phone_no, $job_tittle, $nationality, $ID);
+
+
+}elseif (isset($_POST['checkEmployee'])){
+  $manager->getEmployeeData($_POST['checkEmployee'], true);
 }
-
-
-
  ?>

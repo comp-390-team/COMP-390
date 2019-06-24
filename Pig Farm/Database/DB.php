@@ -51,35 +51,36 @@
                     $run_query=$this->connect()->prepare($Query);
 
                     if($run_query->execute()){
-                        echo "<script>alert('You sucessfylly added  ".$Value."')</script>";
+                        echo json_encode(array("success"=>true));                // echo "<script>window.open('../','_self')</script>";
 
-                        //redirect should take a boolean value . If true we redirect to a new page
-                        if($redirect)
-                        echo "<script>window.open('".$Redirectory."','_self')</script>";
                       }else
-                      echo "<script>alert('Connection problem')</script>";
+                        echo json_encode(array("success"=>true));                // echo "<script>window.open('../','_self')</script>";
 
           }
 
 //Delete and item from a table
-          protected function removeItem($Query,$check_query,$ID,$item_to_remove){
+          protected function removeItem($Query,$check_query,$ID){
             if ($this->itemExists($check_query,$ID)) {
                   $run_query=$this->connect()->prepare($Query);
                   $run_query->execute([$ID]);
+                  echo json_encode(array("success"=>true));                // echo "<script>window.open('../','_self')</script>";
+
             }else{
 
-              echo "<script>alert('".$item_to_remove." with ".$ID." does not exist')</script>";
+              echo json_encode(array("success"=>false));                // echo "<script>window.open('../','_self')</script>";
             }
           }
 
 
-          protected function updateItem($Query,$check_query,$ID,$item_to_remove){
+          protected function updateItem($Query,$check_query,$ID, $echo_message){
             if ($this->itemExists($check_query,$ID)) {
                   $run_query=$this->connect()->prepare($Query);
                   $run_query->execute([$ID]);
-            }else{
 
-              echo "<script>alert('".$item_to_remove." with ".$ID." does not exist')</script>";
+                     if($echo_message)
+                  echo json_encode(array("success"=>false,"updatesuccess"=>true));                // echo "<script>window.open('../','_self')</script>";
+            }else{
+              echo json_encode(array("success"=>false));                // echo "<script>window.open('../','_self')</script>";
             }
           }
     }

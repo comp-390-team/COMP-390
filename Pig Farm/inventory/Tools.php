@@ -1,6 +1,5 @@
 
 <?php
-// require 'Inventory.php';
 
 /**
  *
@@ -24,7 +23,7 @@ class Tool extends Inventory
       $this->Description=$description;
 
       //add to database
-        // Tool::addItem();
+        Tool::addItem();
     }
 
   }
@@ -54,9 +53,60 @@ class Tool extends Inventory
 
   }
 
+
+  public function handTool($name, $quantity, $newQuantity, $employee_ID){
+          $date_Picked  =date('Y-m-d');
+          $time_picked  =time();
+
+
+          $query="INSERT INTO PIG_FARM.tools_picked(`Name`,`Quantity`,`EmployeeID`,`datePicked`,`return_status`,`timePicked`)
+                  VALUES('$name','$quantity','$employee_ID','$date_Picked','U','$time_picked')";
+
+          //add tool to records
+          $this->register_item($query,$this->Name, "",  false);
+
+
+
+          //update the tools quantity
+          $check="SELECT * FROM PIG_FARM.toos where Name=?";
+
+          $update_query="UPDATE toos SET Quantity=$newQuantity WHERE Name=?";
+
+          $this->updateItem($update_query,$check,$name,false);
+
+  }
+
+
+  public function returnTool($name, $quantity, $remark ,$employee_id, $date_picked){
+
+    $query="SELECT toos.Quantity FROM toos  where Name='$name' ";
+    $run = $this->connect()->query($query);
+
+    while ($pig = $run->FETCH())  { $quantity+=$pig['Quantity'];  }
+
+    //update the tools quantity
+    $check="SELECT * FROM PIG_FARM.toos where Name=?";
+
+    $update_query="UPDATE toos SET Quantity=$quantity WHERE Name=?";
+
+    $this->updateItem($update_query,$check,$name,false);
+
+
+    //update the tools picked
+    $date_returned  =date('Y-m-d');
+
+    $update_query="UPDATE tools_picked SET dateReturned='$date_returned',remark='$remark', return_status='R'
+                   WHERE Name=? and datePicked='$date_picked' and EmployeeID='$employee_id'";
+
+    $this->updateItem($update_query,$check,$name,true);
+
+  }
+
+
+
   public function deleteItem($name){
     //query of the feed to be removed is realy in the databse
-    $check_query="SELECT * FROM PIG_FARM.toos where NAme=?";
+    $check_query="SELECT * FROM PIG_FARM.toos where Name=?";
 
     //delete query
     $query="DELETE FROM PIG_FARM.toos where Name=?";
@@ -67,11 +117,64 @@ class Tool extends Inventory
 
   public function retrieveItems(){
 
+    $query="SELECT * FROM toos";
+    $run = $this->connect()->query($query);
+            while ($pig = $run->FETCH())
+        {
+              $name=$pig['Name'];
+              $quantity=$pig['Quantity'];
+              $description=$pig['Description'];
+
+              ?>
+              <tr   id='<?php echo "t_".$name ?>'>
+                <td id='<?php echo "t_".$name."_n"; ?>'><?php echo $name; ?></td>
+                <td id='<?php echo "t_".$name."_q" ?>'><?php echo $quantity; ?></td>
+                <td id='<?php echo "t_".$name."_d" ?>'><?php echo $description; ?></td>
+
+
+                <td> <button class="btn btn-success btn-sm" type="button" name="button" onclick='showToolDetails(<?php echo "\"$name\"" ?>)'>hand out</button> </td>
+                <td> <button class="btn btn-danger  btn-sm" type="button" name="button" onclick='deleteTool(<?php echo "\"$name\"" ?>)'>delete</button> </td>
+              </tr>
+
+   <?php
+        }
+
+  }
+
+  public function retrieveItemsInUSe(){
+// return status='U' means the tool is in use
+
+
+    $query="SELECT tools_picked.*,employees.f_name,employees.s_name FROM tools_picked,employees
+           WHERE employees.ID=tools_picked.EmployeeID and return_status ='U' ";
+    $run = $this->connect()->query($query);
+            while ($pig = $run->FETCH()){
+              $name=$pig['Name'];
+              $quantity=$pig['Quantity'];
+              $employee_ID=$pig['EmployeeID'];
+              $date_Picked=$pig['datePicked'];
+
+
+              $employee_name=$pig['f_name']."  ".$pig['s_name'];
+
+
+              ?>
+              <tr   id='<?php echo "t_".$name ?>'>
+                <td id='<?php echo "t_".$name."_n"; ?>'><?php echo $name; ?></td>
+                <td id='<?php echo "t_".$name."_q" ?>'><?php  echo $quantity; ?></td>
+                <td id='<?php echo "emp_".$name."_id" ?>'><?php  echo $employee_ID; ?></td>
+                <td id='<?php echo "emp_".$name."_name" ?>'><?php  echo $employee_name; ?></td>
+
+
+
+                <td> <button class="btn btn-success btn-sm" type="button" name="button" onclick='showToolInUse(<?php echo "\"$name\",\"$date_Picked\"" ?>)'>Details</button> </td>
+              </tr>
+
+   <?php
+        }
+
   }
 
 
 }
-
-    // $tool=new Tool("Fork Jembe", 5, "2012_10_10"," Used here");
-    // $tool->deleteItem("Fork Jembe");
  ?>

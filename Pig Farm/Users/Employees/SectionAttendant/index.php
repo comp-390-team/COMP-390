@@ -1,10 +1,11 @@
 <?php session_start();?>
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="twitter:" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin</title>
 
     <link rel="stylesheet" href="../../../CSS/style.css">
     <!-- <link rel="stylesheet" href="../../CSS/tableStylying.css"> -->
@@ -26,11 +27,10 @@
       <script src="sweetalert2.all.min.js"></script>
 
 
-
-    <!-- TableSorter -->
-
-
-    <title>Admin</title>
+      <script src="https://code.highcharts.com/highcharts.js"></script>
+      <script src="https://code.highcharts.com/modules/annotations.js"></script>
+      <script src="https://code.highcharts.com/modules/exporting.js"></script>
+      <script src="https://code.highcharts.com/modules/export-data.js"></script>
   </head>
   <body>
    <div id="wrapper">
@@ -39,15 +39,20 @@
         <div class="row">
           <div id="profile">
                   <center><img src="pig.JPG" alt=""></center>
-                  <p><span style="color: green">Name:</span> <?php echo $_SESSION['username'] ?> <br>
+                  <p><span style="color: green">Name:</span> <?php echo $_SESSION['username'];?> <br>
                   <span style="color: green">Title :</span>Section Attendant </p>
+                  <span style="color: green">Employee Id:
+                     <label id="emp_id" style="color: white">
+                       <?php echo gzinflate(base64_decode(str_rot13($_GET['id']))); ?>
+                     </label>
+                  </span>
           </div>
         </div>
         <ul class="sidebar-nav">
               <li id="add_pig"><a> <span id="add_pig"><i class="fas fa-chart-bar"></i></span> Pig </a></li>
               <li id="update_records"><a> <span id="update_pig"><i class="fas fa-users menu-icon"></i></span> Update_Records</a></li>
               <li id="sell_pigs"><a> <span id=""><i class="fas fa-users menu-icon"></i></span> Sale information </a></li>
-              <li id="settings"><a> <span id="menu-icon"><i class="fas fa-cog menu-icon"></i></span>  Settings</a></li>
+              <li id="reports"><a> <span id="profiles"><i class="fas fa-user menu-icon"></i></span> Reports</a></li>
               <li id="user_profile"><a> <span id="profiles"><i class="fas fa-user menu-icon"></i></span> Profile</a></li>
         </ul>
       </div>
@@ -81,7 +86,7 @@
           </div>
         <!-- </div> -->
 
-          <div class="row" id="production">
+          <div class="row" id="production" style="margin: 0px; padding:0px">
             <!-- products view -->
 
 
