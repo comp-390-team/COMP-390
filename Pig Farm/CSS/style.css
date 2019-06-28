@@ -99,6 +99,7 @@ transition: all 0.4s linear;
   transition: background 2s, border-bottom,border-top 500ms;
 }
 
+
 #profile{
   background: #3c3e5e;
   width: 100%;
@@ -166,4 +167,101 @@ transition: all 0.4s linear;
     body {
         background: #555;
     }
+}
+
+
+
+
+
+
+/* //Style sheet for add adding pigs and tools */
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+
+.wrapper {  width: 100%; }
+
+.contact-form{
+	/* max-width: 1100px; */
+	margin: 0 auto;
+	padding: 30px;
+	border-radius: 5px;
+	display: flex;
+	background: #2f4f4f;
+}
+.input-fields{
+	display: flex;
+	margin-top: 30px;
+	flex-direction: column;
+	margin-right: 7%;
+  /* border-left: 3px solid yellow; */
+	background: rgba(0,0,0,0.8);
+
+}
+.input2-fields{
+	display: flex;
+	margin-top: 30px;
+	flex-direction: column;
+	background: rgba(0,0,0,0.8);
+	}
+.input-fields,
+.input2-fields{
+	width: 50%;
+
+}
+.input-fields .input,
+.input2-fields .input{
+	margin: 10px 10px;
+	background: transparent;
+	border: 0;
+	border-bottom: 2px solid #fff;
+	padding: 10px;
+	color: #c5ecfd;
+	width: 80%;
+	line-height: 30px;
+}
+.input-fields textarea{
+	margin-left: 10px;
+  margin-right: 10px;
+
+	background: transparent;
+	border: 0;
+	border-bottom: 2px solid #c5ecfd;
+	padding: 10px 10px;
+	color: #c5ecfd;
+	width: 80%;
+
+}
+.input-fields textarea{
+	height: 120px;
+
+}
+::-webkit-input-placeholder{
+	color: #c5ecfd;
+	}
+::-moz-input-placeholder{
+	color: #c5ecfd;
+	}
+.btn{
+	margin-top: 20px;
+	margin-left: 40px;
+	margin-right: 40px;
+	text-align: center;
+	padding: 15px 10px;
+	border-radius: 5px;
+	color: #fff;
+	cursor: pointer;
+	margin-bottom: 20px;
+	text-transform: uppercase;
+
+
+}
+
+@media screen and (max-width: 600px){
+	.contact-form{
+		flex-direction: column;
+
+	}
+	.input-fields,
+	.input2-fields{
+		width: 100%;
+	}
 }

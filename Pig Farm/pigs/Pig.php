@@ -26,7 +26,7 @@ class Pig extends DBconnect
   }
 
 //Uses the databse class to add a new pig to the database
-  public function addPig($mother_id)
+  public function addPig($mother_id,$employee)
   {
     $check="SELECT * FROM PIG_FARM.pigs where ID=?";
     //check if a feed with the same name is not in the database
@@ -34,8 +34,8 @@ class Pig extends DBconnect
             //add new  feed
               $today=date('Y-m-d');
 
-            $Query="INSERT INTO PIG_FARM.pigs(`ID`,`Date_farrowed`,`Breed`,`Weight`,`Sex`,`sell_request`,`sellStatus`,`Weight_history`,`mother`)
-            VALUES('$this->Pig_Id','$this->Date_farrowed','$this->Breed','$this->Weight','$this->Sex','N','NR','$today=>$this->Weight','$mother_id')";
+            $Query="INSERT INTO PIG_FARM.pigs(`ID`,`Date_farrowed`,`Breed`,`Weight`,`Sex`,`sell_request`,`sellStatus`,`Weight_history`,`mother`,'addedBy')
+            VALUES('$this->Pig_Id','$this->Date_farrowed','$this->Breed','$this->Weight','$this->Sex','N','NR','$today=>$this->Weight','$mother_id','$employee')";
 
             //add to the records
             $this->register_item($Query, $this->Pig_Id,"../Users/Employees/SectionAttendant",true);
@@ -212,7 +212,7 @@ class Pig extends DBconnect
 
 
 //Deletes an occurence of a pig from the database
-  public function removePig($ID)
+  public function removePig($ID,$reason)
   {
     //query if the pig to be removed is realy in the databse
     $check_query="SELECT * FROM PIG_FARM.pigs where ID=?";
@@ -220,8 +220,15 @@ class Pig extends DBconnect
     //delete query
     $query="DELETE FROM PIG_FARM.pigs where ID=?";
 
+    $update_query="UPDATE pigs SET  	deleteStatus='D',deleteReason='$reason'  WHERE ID=?";
+
+
     //Function to delete pig
-    $this->removeItem($query,$check_query,$ID);
+    // $this->removeItem($query,$check_query,$ID);
+
+
+    $this->updateItem($update_query,$check_query,$ID,false);
+
   }
 
   public function removeBreed($breed)
@@ -242,7 +249,7 @@ class Pig extends DBconnect
     $settings=$this->loadCurrentSettings();
 
     if (!$sort)
-    $query="SELECT * FROM `pigs` where sell_request='N'";
+    $query= "SELECT * FROM `pigs` where sell_request='N' and deleteStatus !='D' ";
 
     $run = $this->connect()->query($query);
             while ($pig = $run->FETCH())
@@ -340,7 +347,7 @@ class Pig extends DBconnect
     public function viewPigData($sort,$query)
     {
       if (!$sort)
-      $query="SELECT * FROM pigs ORDER BY Weight";
+      $query="SELECT * FROM pigs where deleteStatus !='D'";
       $run = $this->connect()->query($query);
               while ($pig = $run->FETCH())
           {
@@ -383,6 +390,44 @@ class Pig extends DBconnect
           }
 
     }
+
+
+
+    //returns a table of the pigs in the database
+      public function viewPigsDeleted($sort,$sortQuery){
+
+        $query="SELECT * FROM pigs where deleteStatus ='D'";
+
+        if (!$sort)
+        $query=$query;
+        else
+        $query.="  $sortQuery";
+        $run = $this->connect()->query($query);
+                while ($pig = $run->FETCH())
+            {
+                  $id=$pig['ID'];
+                  $reason=$pig['deleteReason'];
+
+
+                  $b_id=$id."_breed";
+                  $w_id=$id."_weight";
+                  $s_id=$id."_sex";
+                  $sell_id=$id."_sell";
+
+
+
+              echo
+                    "
+                  <tr id='$id'>
+                    <td>".$id."</td>
+                    <td id='$b_id'>".$reason."</td>
+
+
+                 </tr>
+                    ";
+            }
+
+      }
 
 
 
@@ -580,7 +625,7 @@ class Pig extends DBconnect
             while ($pig = $run->FETCH()){
                     $breed=$pig['breed'];
 
-                    $id=$id_option."_".$breed;
+                    $id=$id_option."_".str_replace(" ","_",$breed);
 
                      if($id_option != "all"){
                 if (!in_array($breed,$breeds_currently_sold))
@@ -610,9 +655,9 @@ class Pig extends DBconnect
 
               foreach ( $breeds_currently_sold as $breed ){
 
-                $btn="<button class='btn btn-danger btn-sm' type='button' name='button'  onclick='removeSale(\"".$breed."\")'>&times;</button>";
+                $btn="<button class='btn btn-danger btn-sm' type='button' name='button'  onclick='removeSale(\"".str_replace(" ","_",$breed)."\")'>&times;</button>";
 
-                $tr="<tr id='sales_".$breed."'><td>".$breed."</td> <td>".$btn."</td> </tr>";
+                $tr="<tr id='sales_".str_replace(" ","_",$breed)."'><td>".$breed."</td> <td>".$btn."</td> </tr>";
 
                 if ($breed != "none")
                      echo  $tr;
@@ -692,6 +737,57 @@ class Pig extends DBconnect
            $settings=array("breed" => $breeds_currently_sold, "min_age" => $min_age, 'sex' => $sex,"min_weight"=>$min_weight,"age"=>$age);
 
            return $settings;
+        }
+
+
+
+
+
+        //reports_s_to
+
+
+        public function Report($query, $type){
+
+          $run = $this->connect()->query($query);
+          $total_breeds=0;
+          $total_cash=0;
+
+          $price="";
+
+          while ($pig = $run->FETCH()){
+               $breed     =$pig['Breed'];
+               $count   =$pig['breed_count'];
+               $total_breeds+=$count;
+
+
+               if ($type == "sales"){
+                 $price   =$pig['total_price'];
+                 $total_cash+=$price;
+               }
+
+               ?>
+               <tr>
+                   <td><?php echo $breed; ?></td>
+                   <td><?php echo $count; ?></td>
+                  <?php if ($type == "sales"): ?>
+                   <td><?php echo $price; ?></td>
+                  <?php endif; ?>
+               </tr>
+
+               <?php
+           }
+           ?>
+           <tr style="background: #91E3E0">
+             <td>Total</td>
+             <td><?php echo $total_breeds; ?></td>
+
+             <?php if ($type == "sales"): ?>
+              <td><?php echo $total_cash; ?></td>
+             <?php endif; ?>
+           </tr>
+
+           <?php
+
         }
 
 }

@@ -25,6 +25,70 @@ function addTool() {
 
 }
 
+function  updateFeed(name,type){
+  $("#"+type+"_"+name+"_q").hide();
+  $("#update_"+name).show();
+  $("#update_"+name).val($("#"+type+"_"+name+"_q").text());
+
+  $("#updatebtn_"+name)
+        .attr("onclick","saveUpdate(\""+name+"\",\""+type+"\")")
+        .text("save")
+        .removeClass("btn-success")
+        .addClass("btn-warning");
+}
+
+
+function saveUpdate(name,type) {
+  $("#"+type+"_"+name+"_q").show();
+  $("#update_"+name).hide();
+  $("#updatebtn_"+name)
+        .attr("onclick","updateFeed(\""+name+"\",\""+type+"\")")
+        .text("update")
+        .removeClass("btn-warning")
+        .addClass("btn-success");
+
+
+        var name     =$("#"+type+"_"+name+"_n").text();
+        var quantity =$("#update_"+name).val();
+
+
+         if(quantity > 0){
+            $("#"+type+"_"+name+"_q").text(quantity);
+              updateData(type,name,quantity);
+
+         }else{
+           alert("quantity must be more than zero");
+         }
+}
+
+function updateData(type,name, quantity){
+
+  $.ajax({
+      type: "POST",
+      url:"../../../inventory/updateInventory.php",
+      data: {update_item  : type,
+             name         : name,
+             quantity     : quantity
+             },
+      dataType:'JSON',
+      success: function(response){
+
+           if (response.success){
+              $("#t_"+name).remove();
+           }
+               // Swal.fire(tool_name+"successfully added");
+           else{}
+               // Swal.fire("An error occured");
+      },
+      error:function (response) {
+        alert(response.responseText)
+        // Swal.fire("An error occured");
+      }
+  });
+
+}
+
+
 
 function toolsInUse() {
 
@@ -59,6 +123,7 @@ valid_quantity=false;
   $(document).ready(function() {
     $("#production").load("loadfiles/tool/table.php",function() {
       $("#to_hide").hide();
+      $(".tools").hide();
 
 
       $("#tools").css({"background":"#16A085","transition": "all 0.6s linear", "border-bottom":"2px solid yellow","border-top": "2px solid yellow"});
@@ -103,6 +168,7 @@ function viewFeeds(){
   $(document).ready(function() {
     $("#production").load("loadfiles/feed/table.php",function() {
       $("#to_hide").hide();
+      $(".feeds").hide();
 
 
       $("#feeds").css({"background":"#16A085","transition": "all 0.6s linear", "border-bottom":"2px solid yellow","border-top": "2px solid yellow"});
@@ -116,6 +182,27 @@ function viewFeeds(){
     });
   });
 
+}
+
+
+function getReport() {
+  //Load the pig data table by default
+  $(document).ready(function() {
+    $("#production").load("loadfiles/feed/used_feeds.php",function() {
+      $("#to_hide").hide();
+      $(".feeds").hide();
+
+
+      $("#feeds").css({"background":"#16A085","transition": "all 0.6s linear", "border-bottom":"2px solid yellow","border-top": "2px solid yellow"});
+
+      //reset the rest
+      $("#user_profile").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+      $("#tools").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+      $("#sell_pigs").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+      $("#settings").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+      $("#view_pigs").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+    });
+  });
 }
 
 
@@ -133,7 +220,7 @@ function  showToolDetails(name){
 
     $("#tool_quantity").keyup(function() {
 
-      var available_quantity=$("#t_"+name+"_q").text();
+      var available_quantity=$("#t_"+name.replace(/ /g,"")+"_q").text();
 
 
       var needed_quantity=$("#tool_quantity").val();
@@ -285,7 +372,7 @@ function  showFeedDetails(name){
 
     $("#feed_name").val(name);
 
-     var available_quantity=$("#f_"+name+"_q").text();
+     var available_quantity=$("#f_"+name.replace(/ /g,"")+"_q").text();
 
     $("#feed_quantity").keyup(function() {
 
@@ -349,7 +436,7 @@ function deleteFeed(name) {
       success: function(response){
 
            if (response.success){
-              $("#f_"+name).remove();
+              $("#f_"+name.replace(/ /g,"")).remove();
            }
                // Swal.fire(tool_name+"successfully added");
            else{}
@@ -369,7 +456,45 @@ function handFeed() {
      var quantity=$("#feed_quantity").val();
 
 
+     var  available_quantity=$("#f_"+name.replace(/ /g,"")+"_q").text();
+          available_quantity=Number(available_quantity)-quantity;
+
+
+          $.ajax({
+              type: "POST",
+              url:"../../../inventory/updateInventory.php",
+              data: {hand_feed  : name, employee_id:emp_id ,quantity: quantity, newQuantity: available_quantity},
+              dataType:'JSON',
+              success: function(response){
+
+                   if (response.success){
+
+                            $("#f_"+name.replace(/ /g,"")+"_q").text(available_quantity);
+
+                            if (available_quantity == 0){
+                                   $("#f_"+name.replace(/ /g,"")).remove();
+                                   // reseting control variables
+                                   employee_available=false;
+                                   valid_quantity=false;
+                           }
+
+                     // Swal.fire(tool_name+"successfully added");
+                   }
+                   else{
+                     // Swal.fire("An error occured");
+
+                   }
+              },
+              error:function (response) {
+                alert(response.responseText);
+                // Swal.fire("An error occured");
+              }
+          });
+
+
+
    }else{
+     alert("please insert the right values");
      // Swal.fire("Please enter valid inputs");
    }
 }
@@ -382,7 +507,7 @@ function handTool() {
      var quantity=$("#tool_quantity").val();
 
 
-     var  available_quantity=$("#t_"+name+"_q").text();
+     var  available_quantity=$("#t_"+name.replace(/ /g,"")+"_q").text();
           available_quantity=Number(available_quantity)-quantity;
 
      $.ajax({
@@ -394,10 +519,10 @@ function handTool() {
 
               if (response.success){
 
-                       $("#t_"+name+"_q").text(available_quantity);
+                       $("#t_"+name.replace(/ /g,"")+"_q").text(available_quantity);
 
                        if (available_quantity == 0){
-                              $("#t_"+name).remove();
+                              $("#t_"+name.replace(/ /g,"")).remove();
                               // reseting control variables
                               employee_available=false;
                               valid_quantity=false;
@@ -439,7 +564,7 @@ function returnTool() {
          data: {return_tool  : name, quantity:quantity ,remark: remark,employee_id:employee_id ,date_picked:date_picked},
          dataType:'JSON',
          success: function(response){
-                   $("#t_"+name).remove();
+                   $("#t_"+name.replace(/ /g,"")).remove();
 
                 // Swal.fire(tool_name+"successfully added");
          },

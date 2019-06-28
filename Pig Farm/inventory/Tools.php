@@ -125,16 +125,34 @@ class Tool extends Inventory
               $quantity=$pig['Quantity'];
               $description=$pig['Description'];
 
+              $id=str_replace(" ","",$name);
+
               ?>
               <tr   id='<?php echo "t_".$name ?>'>
                 <td id='<?php echo "t_".$name."_n"; ?>'><?php echo $name; ?></td>
-                <td id='<?php echo "t_".$name."_q" ?>'><?php echo $quantity; ?></td>
+
+                <td>
+                  <span id='<?php echo "t_".$id."_q"; ?>'><?php echo $quantity ?></span>
+                  <div class="md-form"  >
+                    <input id="update_<?php echo $id ?>"  type="Number" class="form-control   tools" name="" value="" style="width: 100%; height: 100%; margin: 0; padding:0">
+
+                  </div>
+
+                </td>
+
                 <td id='<?php echo "t_".$name."_d" ?>'><?php echo $description; ?></td>
+
+                <td>
+                  <button id="updatebtn_<?php echo $id ?>"
+                          class="btn btn-success btn-sm" type="button" name="button" onclick='updateFeed(<?php echo "\"$id\",\"t\"" ?>)'>update
+                  </button>
+               </td>
 
 
                 <td> <button class="btn btn-success btn-sm" type="button" name="button" onclick='showToolDetails(<?php echo "\"$name\"" ?>)'>hand out</button> </td>
                 <td> <button class="btn btn-danger  btn-sm" type="button" name="button" onclick='deleteTool(<?php echo "\"$name\"" ?>)'>delete</button> </td>
               </tr>
+
 
    <?php
         }
@@ -172,6 +190,19 @@ class Tool extends Inventory
 
    <?php
         }
+
+  }
+
+
+
+  public function updateTool($name, $newQuantity){
+
+          //update the tools quantity
+          $check="SELECT * FROM PIG_FARM.toos where Name=?";
+
+          $update_query="UPDATE toos SET Quantity=$newQuantity WHERE Name=?";
+
+          $this->updateItem($update_query,$check,$name,true);
 
   }
 

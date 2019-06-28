@@ -1,3 +1,9 @@
+//Global variables
+var paneID =0;     //increments keeping track of the number of the report
+var panes  =[];   //Used to keep track if the number of reports generated
+
+
+
 
 
 ///Secion atendant files manupilation
@@ -47,10 +53,28 @@ $(document).ready(function(){
     $("#sell_pigs").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
     $("#settings").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
     $("#view_pigs").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+
+    $("#reports").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+
   });
 });
 
-  $("#update_records").click(function(){  loadFiles("all"); });
+
+
+  $("#update_records").click(function(){  loadFiles("all");
+
+  $("#update_records").css({"background":"#16A085","transition": "all 0.6s linear", "border-bottom":"2px solid yellow","border-top": "2px solid yellow"});
+
+  // reset the rest
+  $("#user_profile").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+  $("#add_pig").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+  $("#sell_pigs").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+  $("#settings").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+  $("#view_pigs").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+
+  $("#reports").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+
+});
 
 
     function loadFiles(Type) {
@@ -71,18 +95,7 @@ function vieSorted(area,url,Type,hide, handlePane) {
   $("#"+area).load(url, function() {
 
     type=Type;
-    if (hide){
-    $("#to_hide").hide();
-
-    $("#update_records").css({"background":"#16A085","transition": "all 0.6s linear", "border-bottom":"2px solid yellow","border-top": "2px solid yellow"});
-
-    // reset the rest
-    $("#user_profile").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
-    $("#add_pig").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
-    $("#sell_pigs").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
-    $("#settings").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
-    $("#view_pigs").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
-}
+    if (hide){  $("#to_hide").hide(); }
   });
 }
 
@@ -132,6 +145,180 @@ function sortBy(baseUrl) {
 
 
 
+$(document).ready(function(){
+  $("#store_report").click(function(){
+    $("#production").load("loadfiles/Reports/reports.php",function () {
+
+
+      paneID=0;
+      panes=[];
+
+
+      $("#reportGenerator").hide();
+      $("#oldReport").hide();
+      $("#to_hide").hide();
+      $("#report_date_sold").hide();
+      $("#report_ammount_sold").hide();
+
+      handleSortPane();
+
+      $("#reports").css({"background":"#16A085","transition": "all 0.6s linear", "border-bottom":"2px solid yellow","border-top": "2px solid yellow"});
+
+      //reset the rest
+      $("#user_profile").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+      $("#update_records").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+      $("#add_pig").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+      $("#settings").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+      $("#view_pigs").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+      $("#sell_pigs").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none" });
+
+
+      //add validation for reports_s_to
+      $("#reports_min_weight").keyup(function () {
+
+           if(Number($("#reports_min_weight").val()) < 0  ||
+              Number($("#reports_min_weight").val()) >  Number($("#reports_max_weight").val()) ){
+             $("#reports_min_weight").css({  "border-bottom":"2px solid red" });
+           }else{
+             $("#reports_min_weight").css({ "border":"none" });
+             $("#reports_max_weight").css({ "border":"none" });
+           }
+      });
+
+      $("#reports_max_weight").keyup(function () {
+
+
+           if(Number($("#reports_max_weight").val()) <  Number($("#reports_min_weight").val()) ){
+             $("#reports_max_weight").css({  "border-bottom":"2px solid red" });
+           }else{
+             $("#reports_max_weight").css({ "border":"none" });
+             $("#reports_min_weight").css({ "border":"none" });
+           }
+      });
+
+
+      $("#reports_min_ammount").keyup(function () {
+
+           if(Number($("#reports_min_ammount").val()) < 0  ||
+              Number($("#reports_min_ammount").val()) >  Number($("#reports_max_ammount").val()) ){
+             $("#reports_min_ammount").css({  "border-bottom":"2px solid red" });
+           }else{
+             $("#reports_min_ammount").css({ "border":"none" });
+             $("#reports_max_ammount").css({ "border":"none" });
+           }
+      });
+
+
+      $("#reports_max_ammount").keyup(function () {
+
+
+           if(Number($("#reports_max_ammount").val()) <  Number($("#reports_min_ammount").val()) ){
+             $("#reports_max_ammount").css({  "border-bottom":"2px solid red" });
+           }else{
+             $("#reports_max_ammount").css({ "border":"none" });
+             $("#reports_min_ammount").css({ "border":"none" });
+           }
+      });
+
+
+
+
+    });
+  });
+});
+
+
+
+
+
+
+
+
+$(document).ready(function(){
+  $("#reports").click(function(){
+    $("#production").load("../../includes/Reports/reports.php",function () {
+
+
+      paneID=0;
+      panes=[];
+
+
+      $("#reportGenerator").hide();
+      $("#oldReport").hide();
+      $("#to_hide").hide();
+      $("#report_date_sold").hide();
+      $("#report_ammount_sold").hide();
+
+      handleSortPane();
+
+      $("#reports").css({"background":"#16A085","transition": "all 0.6s linear", "border-bottom":"2px solid yellow","border-top": "2px solid yellow"});
+
+      //reset the rest
+      $("#user_profile").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+      $("#update_records").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+      $("#add_pig").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+      $("#settings").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+      $("#view_pigs").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+      $("#sell_pigs").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none" });
+
+
+      //add validation for reports_s_to
+      $("#reports_min_weight").keyup(function () {
+
+           if(Number($("#reports_min_weight").val()) < 0  ||
+              Number($("#reports_min_weight").val()) >  Number($("#reports_max_weight").val()) ){
+             $("#reports_min_weight").css({  "border-bottom":"2px solid red" });
+           }else{
+             $("#reports_min_weight").css({ "border":"none" });
+             $("#reports_max_weight").css({ "border":"none" });
+           }
+      });
+
+      $("#reports_max_weight").keyup(function () {
+
+
+           if(Number($("#reports_max_weight").val()) <  Number($("#reports_min_weight").val()) ){
+             $("#reports_max_weight").css({  "border-bottom":"2px solid red" });
+           }else{
+             $("#reports_max_weight").css({ "border":"none" });
+             $("#reports_min_weight").css({ "border":"none" });
+           }
+      });
+
+
+      $("#reports_min_ammount").keyup(function () {
+
+           if(Number($("#reports_min_ammount").val()) < 0  ||
+              Number($("#reports_min_ammount").val()) >  Number($("#reports_max_ammount").val()) ){
+             $("#reports_min_ammount").css({  "border-bottom":"2px solid red" });
+           }else{
+             $("#reports_min_ammount").css({ "border":"none" });
+             $("#reports_max_ammount").css({ "border":"none" });
+           }
+      });
+
+
+      $("#reports_max_ammount").keyup(function () {
+
+
+           if(Number($("#reports_max_ammount").val()) <  Number($("#reports_min_ammount").val()) ){
+             $("#reports_max_ammount").css({  "border-bottom":"2px solid red" });
+           }else{
+             $("#reports_max_ammount").css({ "border":"none" });
+             $("#reports_min_ammount").css({ "border":"none" });
+           }
+      });
+
+
+
+
+    });
+  });
+});
+
+
+
+
 
 
 $(document).ready(function(){
@@ -148,9 +335,10 @@ $(document).ready(function(){
       $("#add_pig").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
       $("#settings").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
       $("#view_pigs").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+      $("#reports").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+
 
     });
-
   });
 });
 
@@ -169,6 +357,9 @@ $(document).ready(function(){
       $("#sell_pigs").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
       $("#settings").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
       $("#add_pig").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+
+      $("#reports").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+
 
     });
   });
@@ -214,6 +405,9 @@ $(document).ready(function(){
          $("#sell_pigs").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
          $("#add_pig").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
          $("#view_pigs").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+
+         $("#reports").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+
        });
      });
 
@@ -244,6 +438,9 @@ $(document).ready(function(){
          $("#sell_pigs").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
          $("#settings").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
          $("#view_pigs").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+
+         $("#reports").css({"background":"#2c3e50","transition": "all 0.6s linear", "border":"none"});
+
 
 
        });
@@ -378,6 +575,8 @@ function addNewPig() {
        var weight=$('#weight').val();
        var day=$('#day').val()
        var gender=$('#gender').val();
+       var employee=$('#emp_id').text();
+
 
 
      if (checkInputs(pig_id, breed, weight, day, gender)) {
@@ -399,7 +598,7 @@ function addNewPig() {
 
           }
       };
-      xmlhttp.open("GET","../../../pigs/addpigOrRemovePig.php?pig_id="+pig_id+"&mother_id="+mother_id+"&breed="+breed+"&weight="+weight+"&day="+day+"&gender="+gender,true);
+      xmlhttp.open("GET","../../../pigs/addpigOrRemovePig.php?pig_id="+pig_id+"&mother_id="+mother_id+"&breed="+breed+"&weight="+weight+"&day="+day+"&gender="+gender+"&emp_id="+employee,true);
       xmlhttp.send();
   }else{
     $("#error_notification").fadeIn(2500).fadeOut(20000);
@@ -407,7 +606,7 @@ function addNewPig() {
 }
 
 
-function deletePig(id) {
+function ORIGINALdELETE(id) {
 
   Swal.fire({
   title: 'Delete pig record record?',
@@ -441,7 +640,7 @@ function deletePig(id) {
             }
         };
 
-        xmlhttp.open("GET","../../../pigs/addpigOrRemovePig.php?id="+id,true);
+        xmlhttp.open("GET","../../../pigs/addpigOrRemovePig.php?id="+id+"&reason="+reason,true);
         xmlhttp.send();
 
     }
@@ -453,6 +652,75 @@ function deletePig(id) {
   }
 })
 }
+
+
+
+function deletePig(id) {
+    Swal.fire({
+      title:"Give reasons for deletion.",
+      text : "success",
+      showCancelButton: true
+    }).then((rvalue)=>{
+      if (rvalue.value){
+      Swal.fire({
+      title: "Reasons for pig deletion",
+      showConfirmButton:true,
+      showCancelButton:true,
+      background: '#ECEFF1',
+      confirmButtonText:'<i class="fa fa-thumbs-up"></i> Delete! ',
+      animation: "slide-from-top",
+      html:  '<div class="">'+
+
+              '<!--Card content-->'+
+              '<div class="card-body px-lg-5 pt-0">'+
+
+              '  <!-- Form -->'+
+              '  <form class="text-center" style="color: #7acb75;">'+
+
+                  '<!-- ID -->'+
+                  '<div class="form-row">'+
+                  ' <div class="col">'+
+                  '     <div class="md-form">'+
+                  '          <label>Reason </label>'+
+                  '     </div>'+
+                  ' </div>'+
+                  ' <div class="col">'+
+                  '      <select class="form-control" id="reason">'+
+                  '          <option value="Dead">Dead</option>'+
+                  '           <option value="Wrong entry">Wrong entry</option>'+
+                  '     </select>'+
+                  '  </div>'+
+                  '  </div>'
+      }).then((r2value)=> {
+          if (r2value.value) {
+            var reason  =$("#reason").val();
+
+            $.ajax({
+                type: "GET",
+                url: "../../../pigs/addpigOrRemovePig.php",
+                data: { id  : id,
+                        reason:reason
+                      },
+                dataType:'JSON',
+                success: function(response){
+                  Swal.fire("Deletion was successfull ");
+
+                },
+                error: function (response) {
+                  Swal.fire("An error occured",response.responseText);
+                }
+            });
+
+
+          }
+      });
+
+ }
+});
+
+
+  }
+
 
 
 function updatePig() {

@@ -7,53 +7,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Admin</title>
 
-    <link rel="stylesheet" href="../../../CSS/style.css">
-    <!-- <link rel="stylesheet" href="../../CSS/tableStylying.css"> -->
+    <?php require '../../includes/commonFiles/header.html';
 
-    <link rel="stylesheet" href="../../../CSS/bootstrap.min.css">
-    <link rel="stylesheet" href="../../../CSS/MDB/css/mdb.min.css">
-    <link rel="stylesheet" href="../../../CSS/MDB/css/mdb.css">
-    <link rel="stylesheet" href="../../../CSS/MDB/css/style.css">
+    
+    $details=explode(",",gzinflate(base64_decode(str_rot13($_GET['m']))));
 
+    ?>
 
 
-      <link rel="stylesheet" type="text/css" href="../../../CSS/MDB/css/mdb.style.min.css">
-      <link rel="stylesheet" type="text/css" href="../../../CSS/Scripts/css/jquery.dataTables.min.css">
-
-
-
-        <!-- Sweet alert used for alerts -->
-      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
-      <script src="sweetalert2.all.min.js"></script>
-
-
-      <script src="https://code.highcharts.com/highcharts.js"></script>
-      <script src="https://code.highcharts.com/modules/annotations.js"></script>
-      <script src="https://code.highcharts.com/modules/exporting.js"></script>
-      <script src="https://code.highcharts.com/modules/export-data.js"></script>
   </head>
   <body>
    <div id="wrapper">
       <!-- Sidebar -->
       <div id="sidebar-wrapper">
-        <div class="row">
-          <div id="profile">
-                  <center><img src="pig.JPG" alt=""></center>
-                  <p><span style="color: green">Name:</span> <?php echo $_SESSION['username'];?> <br>
-                  <span style="color: green">Title :</span>Section Attendant </p>
-                  <span style="color: green">Employee Id:
-                     <label id="emp_id" style="color: white">
-                       <?php echo gzinflate(base64_decode(str_rot13($_GET['id']))); ?>
-                     </label>
-                  </span>
-          </div>
-        </div>
+          <?php require '../../includes/commonFiles/employeeInfo.php'; ?>
+
         <ul class="sidebar-nav">
               <li id="add_pig"><a> <span id="add_pig"><i class="fas fa-chart-bar"></i></span> Pig </a></li>
               <li id="update_records"><a> <span id="update_pig"><i class="fas fa-users menu-icon"></i></span> Update_Records</a></li>
               <li id="sell_pigs"><a> <span id=""><i class="fas fa-users menu-icon"></i></span> Sale information </a></li>
-              <li id="reports"><a> <span id="profiles"><i class="fas fa-user menu-icon"></i></span> Reports</a></li>
-              <li id="user_profile"><a> <span id="profiles"><i class="fas fa-user menu-icon"></i></span> Profile</a></li>
+              <li id="reports"><a> <span ><i class="fas fa-user menu-icon"></i></span> Reports</a></li>
+              <li id="user_profile"><a> <span><i class="fas fa-user menu-icon"></i></span> Profile</a></li>
         </ul>
       </div>
       <!-- Sidebar -->
@@ -102,22 +76,8 @@
           </div>
 
 
-   <script src="../../../js/libraries/bootstrap.min.js"></script>
-   <script src="../../../js/libraries/jquery-3.3.1.min.js"></script>
-   <script src="../../../js/libraries/vue.min.js"></script>
-   <script src="../../../CSS/MDB/js/mdb.min.js"></script>
+          <?php require '../../includes/commonFiles/bottomjs.html'; ?>
 
-   <script src="../../../CSS/MDB/js/popper.min.js"></script>
-   <script src="../../../CSS/Scripts/js/jquery.dataTables.min.js"></script>
-
-   <script src="../../../js/Ajaxloader.js"></script>
-   <script src="../../../js/sectionAttendant.js"></script>
-   <script src="../../../js/vueApp.js"></script>
-
-    <script type="text/javascript">
-      // Animations initialization
-      new WOW().init();
-    </script>
 
   </body>
 </html>

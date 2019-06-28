@@ -15,12 +15,12 @@ require '../Database/DB.php';
 
    if(!$check_user){
      $job_tittle=$this->getJobTittle($Employee_Id);
-     $redirect="../Users/Employees/Store Keeper/?id=";
+     $redirect="../Users/Employees/Store Keeper/?m=";
 
                 if ($job_tittle=="Manager")
-                      $redirect="../Users/Manager/?id=";
+                      $redirect="../Users/Admin/Manager/?m=";
                 else if($job_tittle=="Section attendant")
-                   $redirect="../Users/Employees/SectionAttendant/?id=";
+                   $redirect="../Users/Employees/SectionAttendant/?m=";
 
       $this->login($Employee_Id,$User_password, $redirect);
     }else{
@@ -94,7 +94,7 @@ require '../Database/DB.php';
           if ($run_query->rowCount()<1){
             echo "<script>alert('Employee Id incorrect')</script>";
                //redirecting user to a new page after an error
-            echo "<script>window.open('../','_self')</script>";
+            echo "<script>window.open('../../','_self')</script>";
         }else{
 
      if($row = $run_query->fetch(PDO::FETCH_ASSOC)){
@@ -102,21 +102,19 @@ require '../Database/DB.php';
        if(!password_verify($User_password,$row['passcode'])){
                   //User enters a wrong password
          echo "<script>alert('Employee ID or Password Incorrect')</script>";
-         echo "<script>window.open('../','_self')</script>";
+         echo "<script>window.open('../../','_self')</script>";
        }
        else{
-             //Using global variable SESSION we assing the name to help track the user
-           $_SESSION['username']      =$row['f_name']."  ".$row['s_name'];
-           $_SESSION['user_id']       =$row['ID'];
-           $_SESSION['profile']       =$row['profile_picture'];
-           $_SESSION['title']         =$row['job_tittle'];
-           $_SESSION['phone_no']      =$row['phone_no'];
-           $_SESSION['nationality']   =$row['nationality'];
 
-           $redirect.=str_rot13(base64_encode(gzdeflate($_SESSION['user_id'],9)));
+           $message=$row['f_name']."  ".$row['s_name'].",".
+                    $row['ID'].",".
+                    $row['profile_picture'].",".
+                    $row['job_tittle'];
+
+
+           $redirect.=str_rot13(base64_encode(gzdeflate($message,9)));
 
              // $_SESSION['image']=$row['Image'];
-          echo "<script>alert('Welcome ".$_SESSION['username']."')</script>";
           echo "<script>window.open('$redirect','_self')</script>";
         }
       }

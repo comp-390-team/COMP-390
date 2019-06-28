@@ -1,10 +1,17 @@
+
+
+
 <div class="col-md-12" style="padding-bottom: 5px;">
 	<div class="row" style="border-bottom: 2px solid #567">
-		<div class="col-md-6">
+		<div class="col-md-4">
 				 <button class="btn btn-info" type="button"  onclick="viewFeeds()"
 					style="font-weight:bold; font-size:25px; width:100%">view available feeds</button>
 		</div>
-		<div class="col-md-6" style="border-left: 2px solid yellow">
+		<div class="col-md-4" style="border-left: 2px solid yellow">
+					<button class="btn btn-info" type="button"  onclick="getReport()"
+					style="font-weight:bold; font-size:25px; width:100%">Feed report</button></center>
+		</div>
+		<div class="col-md-4" style="border-left: 2px solid yellow">
 					<button class="btn btn-info" type="button"  onclick="addFeed()"
 					style="font-weight:bold; font-size:25px; width:100%">add new tool</button></center>
 		</div>

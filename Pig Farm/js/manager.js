@@ -70,7 +70,7 @@ function validatePhone(phoneNumber) {
 if (clear_to_add)
   $.ajax({
       type: "POST",
-      url:"../../Persons/AddEmployee.php",
+      url:"../../../Persons/AddEmployee.php",
       data: {id  : e_id, first_name:e_fname, second_name:e_sname,
             email:e_address, phone: e_phone, title:e_title, nationality:e_Nationality},
       dataType:'JSON',
@@ -113,7 +113,7 @@ function deleteEmployee(id) {
             }
         };
 
-        xmlhttp.open("GET","../../Persons/AddEmployee.php?delete_id="+id,true);
+        xmlhttp.open("GET","../../../Persons/AddEmployee.php?delete_id="+id,true);
         xmlhttp.send();
 
     }
@@ -169,7 +169,7 @@ function updateEmployee() {
          // $manager->updateEmployee($phone_no, $job_tittle, $nationality, $ID);
 
 
-        xmlhttp.open("GET","../../Persons/AddEmployee.php?update_id="+id+"&phone_no="+phone+"&job_tittle="+tittle+"&nationality="+nationality,true);
+        xmlhttp.open("GET","../../../Persons/AddEmployee.php?update_id="+id+"&phone_no="+phone+"&job_tittle="+tittle+"&nationality="+nationality,true);
         xmlhttp.send();
 
     }
@@ -197,6 +197,14 @@ function viewPigsTosell() {
                handleSortPane();
           });
           }
+function viewDeletedPigs() {
+      $("#production").load("loadfiles/pigsdata/deletedPigs.php",function() {
+           $("#decline").hide();
+           $("#quote_price").hide();
+           $("#to_hide").hide();
+           handleSortPane();
+      });
+}
 
           function hideDetails() {
               $("#details").slideToggle(1000);
@@ -213,7 +221,14 @@ function viewPigsTosell() {
 
 //Opens the field to be used to pick the price
           function openPriceField(){
-            $("#quote_price").slideToggle(1000);
+            $("#quote_price").slideToggle(1000,function() {
+              $("#quoted_price").keyup(function() {
+                   if ($("#quoted_price").val()<1) {
+                     Swal.fire("","Price has to be a positive integer")
+                   }
+              });
+
+            });
             $("#quote_id").slideToggle(1000);
             $("#approve").attr("onclick","approveSelling()");
             $("#approve").text("Approve ");
@@ -248,7 +263,7 @@ function viewPigsTosell() {
                           $("#approve").text("Quote price ");
                         }
                     };
-          xmlhttp.open("GET","../../pigs/addpigOrRemovePig.php?quote_id="+id+"&quote_price="+price,true);
+          xmlhttp.open("GET","../../../pigs/addpigOrRemovePig.php?quote_id="+id+"&quote_price="+price,true);
           xmlhttp.send();
 
               } else
@@ -287,7 +302,7 @@ function viewPigsTosell() {
                           // document.getElementById("production").innerHTML = this.responseText;
                         }
                     };
-          xmlhttp.open("GET","../../pigs/addpigOrRemovePig.php?reject_id="+id+"&remark="+remark,true);
+          xmlhttp.open("GET","../../../pigs/addpigOrRemovePig.php?reject_id="+id+"&remark="+remark,true);
           xmlhttp.send();
 
               } else
@@ -304,6 +319,7 @@ function viewPigsTosell() {
 
             $("#to_hide").fadeIn(1500,function() {
 
+
                   //change images
                   // ../../pigs/pigsToSell/A345/A345_0.jpg
                    var count=0;
@@ -311,7 +327,7 @@ function viewPigsTosell() {
                      $("#previous").click(function() {
                        //set the value of count
                           count=(count == 0)?4:count;
-                       $("#pig_image").attr("src", "../../pigs/pigsToSell/"+id+"/"+id+"_"+count-- +".jpg");
+                       $("#pig_image").attr("src", "../../../pigs/pigsToSell/"+id+"/"+id+"_"+count-- +".jpg");
                      });
                   });
 
@@ -321,11 +337,11 @@ function viewPigsTosell() {
                      $("#next").click(function() {
                        //set the value of count
                           count=(count == 4)?0:count;
-                       $("#pig_image").attr("src", "../../pigs/pigsToSell/"+id+"/"+id+"_"+count++ +".png");
+                       $("#pig_image").attr("src", "../../../pigs/pigsToSell/"+id+"/"+id+"_"+count++ +".png");
                      });
                   });
 
-                  $("#pig_image").attr("src", "../../pigs/pigsToSell/"+id+"/"+id+"_"+count+".jpg");
+                  $("#pig_image").attr("src", "../../../pigs/pigsToSell/"+id+"/"+id+"_"+count+".jpg");
 
 
               //Open the details pane if hidden
@@ -355,7 +371,7 @@ function viewPigsTosell() {
           function updateSellSettings(min_age, min_weight, sex, breeds, current_age) {
             $.ajax({
                 type: "POST",
-                url: "../../pigs/addpigOrRemovePig.php",
+                url: "../../../pigs/addpigOrRemovePig.php",
                 data: {min_age:min_age, min_weight:min_weight, sex:sex, breeds:breeds, current_age:current_age},
                 dataType:'JSON',
                 success: function(response){
@@ -375,7 +391,7 @@ function viewPigsTosell() {
           function addNewBreed(breed) {
             $.ajax({
                 type: "POST",
-                url: "../../pigs/addpigOrRemovePig.php",
+                url: "../../../pigs/addpigOrRemovePig.php",
                 data: {add_breed:breed},
                 dataType:'JSON',
                 success: function(response){
@@ -401,7 +417,7 @@ function viewPigsTosell() {
           function removeBreed(breed) {
             $.ajax({
                 type: "POST",
-                url: "../../pigs/addpigOrRemovePig.php",
+                url: "../../../pigs/addpigOrRemovePig.php",
                 data: {remove_breed:breed},
                 dataType:'JSON',
                 success: function(response){

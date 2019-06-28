@@ -87,20 +87,95 @@ class Feed extends Inventory
                 $name=$pig['Name'];
                 $quantity=$pig['Quantity'];
                 $type=$pig['type'];
+
+                $id=str_replace(" ","",$name);
                 ?>
 
-                <tr   id='<?php echo "f_".$name ?>'>
-                  <td id='<?php echo "f_".$name."_n"; ?>'><?php echo $name ?></td>
-                  <td id='<?php echo "f_".$name."_q"; ?>'><?php echo $quantity ?></td>
-                  <td id='<?php echo "f_".$name."_t"; ?>'><?php echo $type ?></td>
+                <tr   id='<?php echo "f_".$id ?>'>
+                  <td id='<?php echo "f_".$id."_n"; ?>'><?php echo $name ?></td>
+                  <td>
+                    <span id='<?php echo "f_".$id."_q"; ?>'><?php echo $quantity ?></span>
+                    <div class="md-form"  >
+                      <input id="update_<?php echo $id ?>"  type="Number" class="form-control   feeds" name="" value="" style="width: 100%; height: 100%; margin: 0; padding:0">
 
-                  <td> <button class="btn btn-success btn-sm" type="button" name="button" onclick='showFeedDetails(<?php echo "\"$name\"" ?>)'>hand out</button> </td>
-                  <td> <button class="btn btn-danger  btn-sm" type="button" name="button" onclick='deleteFeed(<?php echo "\"$name\"" ?>)'>delete</button> </td>
+                    </div>
+                   </td>
+                  <td id='<?php echo "f_".$id."_t"; ?>'><?php echo $type ?></td>
+
+                  <td>
+                    <button id="updatebtn_<?php echo $id ?>"
+                            class="btn btn-success btn-sm" type="button" name="button" onclick='updateFeed(<?php echo "\"$id\",\"f\"" ?>)'>update
+                    </button>
+                 </td>
+
+                  <td> <button       class="btn btn-success btn-sm" type="button" name="button" onclick='showFeedDetails(<?php echo "\"$id\"" ?>)'>hand out</button> </td>
+                  <td> <button       class="btn btn-danger  btn-sm" type="button" name="button" onclick='deleteFeed(<?php echo "\"$name\"" ?>)'>delete</button> </td>
                 </tr>
 
                 <?php
 
           }
+
+    }
+
+
+
+    public function retrieveFeedsUsed(){
+
+      $query="SELECT * FROM feeds_used";
+      $run = $this->connect()->query($query);
+              while ($feed = $run->FETCH())
+          {
+                $name=$feed['Name'];
+                $quantity=$feed['Quantity'];
+                $id=$feed['EmployeeID'];
+                $date=$feed['datePicked'];
+
+
+                ?>
+               <tr>
+                 <td><?php echo $name ?></td>
+                 <td><?php echo $quantity?></td>
+                 <td><?php echo $id ?></td>
+                 <td><?php echo $date ?></td>
+               </tr>
+
+                <?php
+
+          }
+
+    }
+
+
+    public function handFeed($name, $quantity, $newQuantity, $employee_ID){
+            $date_Picked  =date('Y-m-d');
+
+
+            $query="INSERT INTO PIG_FARM.feeds_used(`Name`,`Quantity`,`EmployeeID`,`datePicked`)
+                    VALUES('$name','$quantity','$employee_ID','$date_Picked')";
+
+            //add tool to records
+            $this->register_item($query,$name, "",  false);
+
+
+
+            //update the tools quantity
+            $check="SELECT * FROM PIG_FARM.feed where Name=?";
+
+            $update_query="UPDATE feed SET Quantity=$newQuantity WHERE Name=?";
+
+            $this->updateItem($update_query,$check,$name,false);
+
+    }
+
+    public function updateFeed($name, $newQuantity){
+
+            //update the tools quantity
+            $check="SELECT * FROM PIG_FARM.feed where Name=?";
+
+            $update_query="UPDATE feed SET Quantity=$newQuantity WHERE Name=?";
+
+            $this->updateItem($update_query,$check,$name,true);
 
     }
 

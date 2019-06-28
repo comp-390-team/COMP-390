@@ -52,13 +52,14 @@
 
 
              <div class="md-form">
-               <i class="fas fa-envelope prefix grey-text"></i>
-               <input type="text" id="breed" class="form-control"  list="breeds"  name="breed" required>
-               <label for="gender">Breed <span style="display: none" id="breed_r">*</span></label>
+              <center>
+               <select class="" id="breed" class="form-control" name="" style="width: 70%; ">
+                 <option  selected disabled>----select  breed----</option>
+                 <?php $pig->loadBreeds("all");?>
+               </select>
+             </center>
 
-               <datalist id="breeds">
-                    <?php $pig->loadBreeds("all");?>
-               </datalist>
+
              </div>
 
              <div class="md-form">

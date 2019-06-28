@@ -22,14 +22,14 @@
 			require '../../../../Database/DB.php';
 			require '../../../../pigs/Pig.php';
 
-         $link='\'../../includes/getsortedData.php?choice=viewAll&\'';
+      $link='\'../../includes/getsortedData.php?choice=viewAll&\'';
 		   	require '../../../includes/sortby.php';
 
 			 ?>
 
 	    <!-- </div> -->
 
-			<table class="table table-bordered table-sm " id="myTable">
+			<table class="table table-bordered table-sm" id="myTable">
 	  <thead>
 	    <tr>
 	      <th class="text-uppercase">Pig ID</th>
@@ -325,8 +325,8 @@
     <script >
     	$(document).ready(function () {
     		$('#myTable').dataTable();
-				$("#statisticsHolder").hide();
 
+				$("#statisticsHolder").hide();
     		$("#load_statistics").click(function() {
 
     			   $("#allPigs").slideUp(150);

@@ -20,17 +20,25 @@ $breed=str_replace("_"," ",$breed);
 $query="";
 
   if ($sex == 'all' && $breed == 'all')
-    $query="SELECT * FROM `pigs` where sell_request='N' and Weight between $min_weight and $max_weight
-           and Date_farrowed BETWEEN '$from' and '$to'";
+    $query="SELECT * FROM `pigs` where      sell_request='N'  and     deleteStatus !='D'   and
+            Weight               between    $min_weight       and     $max_weight          and
+            Date_farrowed        BETWEEN   '$from'            and    '$to'";
    if($sex !='all')
-    $query="SELECT * FROM `pigs` where sell_request='N' and Weight between $min_weight and $max_weight
-            and Date_farrowed BETWEEN '$from' and '$to' and Sex='$sex'";
+    $query="SELECT * FROM `pigs` where      sell_request='N'  and     deleteStatus !='D'   and
+            Weight               between    $min_weight       and     $max_weight          and
+            Date_farrowed        BETWEEN   '$from'            and    '$to'                 and
+            Sex='$sex'";
   if ($breed !='all')
-    $query="SELECT * FROM `pigs` where sell_request='N' and   Weight between $min_weight and $max_weight
-            and Date_farrowed BETWEEN '$from' and '$to' and  	Breed='$breed'";
+    $query="SELECT * FROM `pigs` where      sell_request='N'  and     deleteStatus !='D'   and
+            Weight               between    $min_weight       and     $max_weight          and
+            Date_farrowed        BETWEEN   '$from'            and    '$to'                 and
+            Breed='$breed'";
   if ($sex != 'all' && $breed != 'all')
-    $query="SELECT * FROM `pigs` where sell_request='N' and   Weight between $min_weight and $max_weight
-            and Date_farrowed BETWEEN '$from' and '$to' and  	Breed='$breed'  and Sex='$sex'";
+    $query="SELECT * FROM `pigs` where      sell_request='N'  and     deleteStatus !='D'   and
+            Weight               between     $min_weight      and     $max_weight          and
+            Date_farrowed        BETWEEN    '$from'           and    '$to'                 and
+            Breed='$breed'       and
+            Sex='$sex'";
 
 
 if ($choice == "viewAll")
@@ -42,12 +50,19 @@ if ($choice == "pigSell" ){
      $pig->viewPigsToBeSold(true, $query);
    }
 if($choice == "rejected"){
-   $query=str_replace("SELECT * FROM `pigs` where sell_request='N'" ,"  ",$query);
+   $query=str_replace("SELECT * FROM `pigs` where      sell_request='N'  and     deleteStatus !='D" ,"  ",$query);
     $pig->rejectedForSale(true, $query);
 }
 if($choice == "accepted"){
-   $query=str_replace("SELECT * FROM `pigs` where sell_request='N'" ,"  ",$query);
+   $query=str_replace("SELECT * FROM `pigs` where      sell_request='N'  and     deleteStatus !='D'" ,"  ",$query);
     $pig->acceptedForSale(true, $query);
+}
+
+if($choice == "deleted"){
+
+   $query=str_replace("SELECT * FROM `pigs` where      sell_request='N'  and     deleteStatus !='D'" ,"  ",$query);
+   $pig->viewPigsDeleted(true, $query);
+
 }
 
  ?>

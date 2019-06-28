@@ -192,16 +192,16 @@ function sellPig(pig_id) {
 
                              clearSales();
                             var selected =pig_id;
-                            var price    =$("#"+selected+"_price").text();
+                            var price    =$("#"+selected.replace(/ /g,"_")+"_price").text();
 
                             var current_total=$("#total").text();
                             var sum_total=Number(current_total)+Number(price);
 
-                            var btn="<button class='btn btn-danger btn-sm' type='button' name='button'  onclick='removeSale(\""+selected+"\")'>&times;</button>";
+                            var btn="<button class='btn btn-danger btn-sm' type='button' name='button'  onclick='removeSale(\""+selected.replace(/ /g,"_")+"\")'>&times;</button>";
 
-                            var tr="<tr id='sales_"+selected+"'>"+
+                            var tr="<tr id='sales_"+selected.replace(/ /g,"_")+"'>"+
                                       "<td>"+selected+"</td>"+
-                                      "<td id='iprice_"+selected+"'>"+price+"</td>"+
+                                      "<td id='iprice_"+selected.replace(/ /g,"_")+"'>"+price+"</td>"+
                                       "<td>"+btn+"</td>";
 
                             $("#total_charges").before(tr);
@@ -318,16 +318,16 @@ function sellPig(pig_id) {
 
                                     clearSales();
                                    var selected =pig_id;
-                                   var price    =$("#"+selected+"_price").text();
+                                   var price    =$("#"+selected.replace(/ /g,"_")+"_price").text();
 
                                    var current_total=$("#total").text();
                                    var sum_total=Number(current_total)+Number(price);
 
-                                   var btn="<button class='btn btn-danger btn-sm' type='button' name='button'  onclick='removeSale(\""+selected+"\")'>&times;</button>";
+                                   var btn="<button class='btn btn-danger btn-sm' type='button' name='button'  onclick='removeSale(\""+selected.replace(/ /g,"_")+"\")'>&times;</button>";
 
-                                   var tr="<tr id='sales_"+selected+"'>"+
+                                   var tr="<tr id='sales_"+selected.replace(/ /g,"_")+"'>"+
                                              "<td>"+selected+"</td>"+
-                                             "<td id='iprice_"+selected+"'>"+price+"</td>"+
+                                             "<td id='iprice_"+selected.replace(/ /g,"_")+"'>"+price+"</td>"+
                                              "<td>"+btn+"</td>";
 
                                    $("#total_charges").before(tr);
@@ -404,11 +404,11 @@ function addMorePigs() {
             var current_total=$("#total").text();
             var sum_total=Number(current_total)+Number(price);
 
-            var btn="<button class='btn btn-danger btn-sm' type='button' name='button'  onclick='removeSale(\""+selected+"\")'>&times;</button>";
+            var btn="<button class='btn btn-danger btn-sm' type='button' name='button'  onclick='removeSale(\""+selected.replace(/ /g,"_")+"\")'>&times;</button>";
 
-            var tr="<tr id='sales_"+selected+"'>"+
+            var tr="<tr id='sales_"+selected.replace(/ /g,"_")+"'>"+
                       "<td>"+selected+"</td>"+
-                      "<td id='iprice_"+selected+"'>"+price+"</td>"+
+                      "<td id='iprice_"+selected.replace(/ /g,"_")+"'>"+price+"</td>"+
                       "<td>"+btn+"</td>";
 
             $("#total_charges").before(tr);
@@ -423,7 +423,7 @@ function addMorePigs() {
 
 
 function removeSale(id_remove) {
-  var option="<option value='"+id_remove+"' > "+id_remove+"</option>";
+  var option="<option value='"+id_remove.replace(/_/g," ")+"' > "+id_remove.replace(/_/g," ")+"</option>";
 
   var current_total=$("#total").text();
   var price    =$("#iprice_"+id_remove+"").text();

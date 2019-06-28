@@ -1,15 +1,21 @@
 <div class="col-md-12" style="padding-bottom: 5px;">
 	<div class="row" style="border-bottom: 2px solid #567">
-		<div class="col-md-6">
+		<div class="col-md-4">
 				 <button class="btn btn-info" type="button"  onclick="viewFeeds()"
 					style="font-weight:bold; font-size:25px; width:100%">view available feeds</button>
 		</div>
-		<div class="col-md-6" style="border-left: 2px solid yellow">
+		<div class="col-md-4" style="border-left: 2px solid yellow">
+					<button class="btn btn-info" type="button"  onclick="getReport()"
+					style="font-weight:bold; font-size:25px; width:100%">Feeds report</button></center>
+		</div>
+		<div class="col-md-4" style="border-left: 2px solid yellow">
 					<button class="btn btn-info" type="button"  onclick="addFeed()"
 					style="font-weight:bold; font-size:25px; width:100%">add new feed</button></center>
 		</div>
+
 	</div>
 </div>
+
 	<div class="col-lg-12 col-md-12 col-sm-12" id="tableHolder"  style="height: calc(100vh - 185px)">
 		<!-- <div class="container mt-4" id="statisticsHolder">
             kkfjerkfjerfkerkferferjfk
@@ -21,7 +27,8 @@
 	      <th class="text-uppercase">Name</th>
 	      <th class="text-uppercase">Quantity available</th>
 	      <th class="text-uppercase">Type</th>
-	      <th class="text-uppercase">Update</th>
+				<th class="text-uppercase">Update</th>
+	      <th class="text-uppercase">hand out</th>
 	      <th class="text-uppercase">Delete</th>
 	    </tr>
 	  </thead>

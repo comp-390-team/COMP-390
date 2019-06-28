@@ -14,20 +14,24 @@ if(isset($_GET['pig_id'])){
   $date     =$_GET['day'];
   $gender   =$_GET['gender'];
 
+  $employee =$_GET['emp_id'];
+
+
+
 
 
 
 
 //add pig
   $pig=new Pig( $ID, $date, $breed, $weight, $gender);
-  $pig->addPig($mother_id);
+  $pig->addPig($mother_id,$employee);
 
 }else{
 
   $pig=new Pig();
   //remove the pig from the database
   if (isset($_GET['id'])){
-  $pig->removePig($_GET['id']);
+  $pig->removePig($_GET['id'], $_GET['reason']);
 
   //Else statement used to update
 }elseif (isset($_GET['update_id'])) {
